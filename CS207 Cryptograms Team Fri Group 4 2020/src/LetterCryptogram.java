@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class LetterCryptogram extends Cryptogram {
 	
-	public HashMap<String, String> cryptogramAlphabet
+	public HashMap<String, String> cryptogramAlphabet;
 	
 	
 	
