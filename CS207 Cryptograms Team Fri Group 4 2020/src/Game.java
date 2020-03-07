@@ -1,17 +1,34 @@
 import java.util.HashMap;
+import java.util.Random;
 
 public class Game {
-	
+    
+	private Cryptogram cryptogram;
 	public HashMap<Player, Game> playerGameMapping;
 	public Player currentPlayer;
+	public String cryptType;
 	
-	
-	public Game(Player p, String cryptType) {
-		
+
+	public Game(String p, String cryptType) {
+		currentPlayer = new Player(p);
+		this.cryptType = cryptType;
 	}
 	
-	public Game(Player p) {
+	public Game(String p) {
+		currentPlayer = new Player(p);
+		cryptType = cryptTypeFunction();
+	}
+
+
+
+	public String cryptTypeFunction() {
+		Random randomInt = new Random();
 		
+		if (randomInt.nextInt(2) == 1) {
+			return "LetterCryptogram";
+		} else {
+			return "NumberCryptogram";
+		}
 	}
 	
 	public void getHint() {
@@ -26,7 +43,13 @@ public class Game {
 		
 	}
 	
-	public void generateCryptogram() {
+	public void generateCryptogram(String cryptoType) {
+		if (cryptoType.equals("NumberCryptogram")) {
+			cryptogram = new NumberCryptogram();
+		} 
+		else if (cryptoType.equals("LetterCryptogram")) {
+			cryptogram = new LetterCryptogram();
+		}
 		
 	}
 	
