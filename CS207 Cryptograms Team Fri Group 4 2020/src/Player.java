@@ -1,4 +1,3 @@
-
 public class Player {
 	
 	public String username;
@@ -10,6 +9,11 @@ public class Player {
 	
 	
 	public Player(String username) {
+	    this.accuracy = 0;
+	    this.accurateGuesses = 0;
+	    this.totalGuesses = 0;
+	    this.cryptogramsPlayed = 0;
+	    this.cryptogramsCompleted = 0;
 		this.username = username;
 	}
 	
