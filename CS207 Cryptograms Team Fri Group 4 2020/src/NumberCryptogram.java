@@ -1,7 +1,8 @@
+import java.util.HashMap;
 
 public class NumberCryptogram extends Cryptogram {
 	
-	// add cryptogramAlphabet
+	public HashMap<Integer, Integer> cryptogramAlphabet;
 	
 	
 	
