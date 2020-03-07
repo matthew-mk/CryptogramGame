@@ -1,7 +1,8 @@
+import java.util.HashMap;
 
 public class Game {
 	
-	// add playerGameMapping here
+	public HashMap<Player, Game> playerGameMapping;
 	public Player currentPlayer;
 	
 	
