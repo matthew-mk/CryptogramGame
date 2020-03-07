@@ -15,9 +15,11 @@ public class Players {
 		
 	}
 	
+	/*
 	public Player findPlayer(Player p) {
-		return p;	// Change this
+
 	}
+	*/
 	
 	public int getAllPlayersAccuracies() {
 		return 0;

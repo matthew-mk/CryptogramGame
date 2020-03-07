@@ -3,6 +3,7 @@ public class Player {
 	
 	public String username;
 	public int accuracy;
+	public int accurateGuesses;
 	public int totalGuesses;
 	public int cryptogramsPlayed;
 	public int cryptogramsCompleted;
@@ -14,7 +15,7 @@ public class Player {
 	
 	
 	public void updateAccuracy() {
-		
+		accuracy = (accurateGuesses / totalGuesses) * 100;
 	}
 	
 	public void incrementCryptogramsCompleted() {
