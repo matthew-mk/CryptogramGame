@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Game {
 	
@@ -62,11 +63,27 @@ public class Game {
 	}
 	
 	public void generateCryptogram(String cryptoType) {
+		ArrayList<String> phrases = new ArrayList<>();
+		File file = new File("Crypto-Phrases.txt");
+		try {
+			Scanner reader = new Scanner(file);
+			while (reader.hasNextLine()){
+				phrases.add(reader.nextLine());
+			}
+			reader.close();
+		}
+		catch (FileNotFoundException e){
+			System.out.println(e);
+		}
+		Random randomInt = new Random();
+		int pId;
+		pId = randomInt.nextInt(phrases.size() - 1);
+
 		if (cryptoType.equals("NumberCryptogram")) {
-			cryptogram = new NumberCryptogram("Hello world");
+			cryptogram = new NumberCryptogram(phrases.get(pId));
 		} 
 		else if (cryptoType.equals("LetterCryptogram")) {
-			cryptogram = new LetterCryptogram("Hello world");
+			cryptogram = new LetterCryptogram(phrases.get(pId));
 		}
 	}
 
@@ -81,7 +98,7 @@ public class Game {
 			System.out.println("That character is already mapped.");
 		}
 		else if ((!cryptogram.getKeyList().contains(sym))){
-			System.out.println("That character is not in the scrambled phrase.");
+			System.out.println("That number is not in the phrase.");
 		}
 		else {
 			cryptogram.addLetter(sym, x);
