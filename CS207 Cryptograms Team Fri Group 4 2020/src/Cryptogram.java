@@ -4,19 +4,19 @@ public abstract class Cryptogram {
 
 	protected HashMap<String, String> userGuess;
 	protected HashMap<String, String> cryptoMapping;
+	protected HashMap<String, String> answerMapping;
 	protected String phrase;
 	protected ArrayList<String> encryptedPhrase;
 	
 	public abstract void addLetter(String c, String n);
 	public abstract void undoLetter(String c);
 	public abstract boolean isSolved();
+	public abstract Set<String> getIntList();
 
 	public boolean hasMapping(String s) {
 		return cryptoMapping.containsKey(s);
 	}
-	public boolean hasUserGuess(String s) { 
-	    return userGuess.containsValue(s); 
-	}
+	public boolean hasUserGuess(String s) { return userGuess.containsValue(s); }
 
 	public void displayPuzzle() {
 		System.out.println(userGuess);
