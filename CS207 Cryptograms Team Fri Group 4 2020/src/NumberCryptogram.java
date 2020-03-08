@@ -1,10 +1,6 @@
 import java.util.*;
 
-
 public class NumberCryptogram extends Cryptogram {
-
-
-
 
 	public NumberCryptogram(String file) {
 		this.phrase = file;
@@ -54,38 +50,6 @@ public class NumberCryptogram extends Cryptogram {
 		}
 	}
 
-
-	@Override
-	public void addLetter(String c, String n) {
-		userGuess.put(c, n);
-	}
-
-	@Override
-	public void undoLetter(String c) {
-		userGuess.remove(c);
-	}
-
-	@Override
-	public boolean isSolved() {
-		if(userGuess.size() < cryptoMapping.size()) {
-			return false;
-		}
-		if(userGuess.equals(answerMapping)) {
-			System.out.println("You have solved the cryptogram.");
-			return true;
-		}
-		else{
-			System.out.println("Your solution is incorrect.");
-			return false;
-		}
-	}
-
-	public Set<String> getIntList(){
-		return answerMapping.keySet();
-	}
-	
-	
-	
 	/*
 	public void undoLetter(char c) {
 		for (int i = 0; i < getPhraseLength(); i++) {
