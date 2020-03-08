@@ -7,11 +7,6 @@ public abstract class Cryptogram {
 	protected HashMap<String, String> answerMapping;
 	protected String phrase;
 	protected ArrayList<String> encryptedPhrase;
-	
-	public abstract void addLetter(String c, String n);
-	public abstract void undoLetter(String c);
-	public abstract boolean isSolved();
-	public abstract Set<String> getIntList();
 
 	public boolean hasMapping(String s) {
 		return cryptoMapping.containsKey(s);
@@ -44,5 +39,34 @@ public abstract class Cryptogram {
 		}
 		System.out.println();
 	}
-	
+
+
+	public void addLetter(String c, String n) {
+		userGuess.put(c, n);
+	}
+
+
+	public void undoLetter(String c) {
+		userGuess.remove(c);
+	}
+
+	public boolean isSolved() {
+		if(userGuess.size() < cryptoMapping.size()) {
+			return false;
+		}
+		if(userGuess.equals(answerMapping)) {
+			System.out.println("You have solved the cryptogram.");
+			return true;
+		}
+		else{
+			System.out.println("Your solution is incorrect.");
+			return false;
+		}
+	}
+
+	public Set<String> getKeyList(){
+		return answerMapping.keySet();
+	}
+
 }
+
