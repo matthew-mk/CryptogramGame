@@ -32,6 +32,7 @@ public class LetterCryptogram extends Cryptogram {
 	
 	public void matchLetterToLetter() {
 		letEncryptionMapping = new HashMap<Character, Character>();
+		visibleLetters = new HashMap<Character, Boolean>();
 		Character[] charArray = new Character[26];
 		
 	    for (int i = 0; i < charArray.length; i++) {
@@ -42,6 +43,7 @@ public class LetterCryptogram extends Cryptogram {
 	    
 		for (int i = 0; i < 26; i++) {
 			letEncryptionMapping.put(cryptogramAlphabet[i], charArray[i]);
+			visibleLetters.put(cryptogramAlphabet[i], false);
 		} 
 	}
 	
@@ -51,7 +53,11 @@ public class LetterCryptogram extends Cryptogram {
 				System.out.print("   ");
 			}
 			else if (phrase.charAt(i) == c) {
+				visibleLetters.put(phrase.charAt(i), true);
 				System.out.print(c + " ");
+			}
+			else if (visibleLetters.get(phrase.charAt(i)) == true) {
+				System.out.print(phrase.charAt(i) + " ");
 			}
 			else {
 				System.out.print("_ ");
