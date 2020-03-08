@@ -66,7 +66,7 @@ public class Game {
 			cryptogram = new NumberCryptogram("Hello world");
 		} 
 		else if (cryptoType.equals("LetterCryptogram")) {
-			cryptogram = new LetterCryptogram();
+			cryptogram = new LetterCryptogram("Hello world");
 		}
 	}
 
@@ -80,8 +80,8 @@ public class Game {
 		if (cryptogram.hasUserGuess(x)) {
 			System.out.println("That character is already mapped.");
 		}
-		else if ((!cryptogram.getIntList().contains(sym))){
-			System.out.println("That number is not in the phrase.");
+		else if ((!cryptogram.getKeyList().contains(sym))){
+			System.out.println("That character is not in the scrambled phrase.");
 		}
 		else {
 			cryptogram.addLetter(sym, x);
