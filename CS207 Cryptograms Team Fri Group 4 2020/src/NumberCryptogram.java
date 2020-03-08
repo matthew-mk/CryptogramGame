@@ -57,6 +57,7 @@ public class NumberCryptogram extends Cryptogram {
 				System.out.print("   ");
 			}
 			else if (phrase.charAt(i) == c) {
+			    visibleLetters.put(phrase.charAt(i), true);
 				System.out.print(c + " ");
 			}
 			else if (visibleLetters.get(phrase.charAt(i)) == true) {
