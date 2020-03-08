@@ -8,7 +8,7 @@ public class Players {
 	
 	
 	public void addPlayer(Player p) {
-		
+		allPlayers.add(p);
 	}
 	
 	public void savePlayers() {

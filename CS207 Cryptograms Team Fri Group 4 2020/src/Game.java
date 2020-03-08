@@ -2,9 +2,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Game {
-    
-	private Cryptogram cryptogram;
+	
 	public HashMap<Player, Game> playerGameMapping;
+	public Cryptogram cryptogram;
 	public Player currentPlayer;
 	public String cryptType;
 	
@@ -16,12 +16,11 @@ public class Game {
 	
 	public Game(String p) {
 		currentPlayer = new Player(p);
-		cryptType = cryptTypeFunction();
+		cryptType = cryptTypeDecider();
 	}
 
 
-
-	public String cryptTypeFunction() {
+	public String cryptTypeDecider() {
 		Random randomInt = new Random();
 		
 		if (randomInt.nextInt(2) == 1) {
@@ -50,7 +49,6 @@ public class Game {
 		else if (cryptoType.equals("LetterCryptogram")) {
 			cryptogram = new LetterCryptogram();
 		}
-		
 	}
 	
 	public void enterLetter() {
