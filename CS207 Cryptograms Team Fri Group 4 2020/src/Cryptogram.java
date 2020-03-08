@@ -47,7 +47,24 @@ public class Cryptogram {
 		System.out.println("\n");
 	}
 	
-	
-	
+		public void undoLetter(char c) {
+		for (int i = 0; i < getPhraseLength(); i++) {
+			if (phrase.charAt(i) == ' ') {
+				System.out.print("   ");
+			}
+			else if (phrase.charAt(i) == c) {
+				phrase.replace('t', ' ');
+				System.out.print("_ ");
+				visibleLetters.put(phrase.charAt(i), false);
+			}
+			else if (visibleLetters.get(phrase.charAt(i)) == true) {
+				System.out.print(phrase.charAt(i) + " ");
+			}
+			else {
+				System.out.print("_ ");
+			}
+		}
+	}
+
 	
 }
