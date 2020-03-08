@@ -35,6 +35,7 @@ public class Game {
 					System.out.println("Command not understood.");
 				}
 			}
+			break;
 		}
 	}
 
@@ -68,7 +69,7 @@ public class Game {
 			cryptogram = new LetterCryptogram();
 		}
 	}
-	
+
 	public void enterLetter() {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Which character would you like to map? ");
@@ -78,12 +79,17 @@ public class Game {
 
 		if (cryptogram.hasUserGuess(x)) {
 			System.out.println("That character is already mapped.");
-		} else {
+		}
+		else if ((!cryptogram.getIntList().contains(sym))){
+			System.out.println("That number is not in the phrase.");
+		}
+		else {
 			cryptogram.addLetter(sym, x);
 		}
 		//input.close();
 	}
-	
+
+
 	public void undoLetter() {
 		Scanner input = new Scanner(System.in);
 		System.out.print("Which character would you like to remove?");
