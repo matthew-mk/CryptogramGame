@@ -69,4 +69,19 @@ public class Cryptogram {
 			
 		}
 	}
+
+		public void enterLetter(char c) {
+		for (int i = 0; i < getPhraseLength(); i++) {
+			if (phrase.charAt(i) == ' ') {
+				System.out.print("   ");
+			}
+			else if (phrase.charAt(i) == c) {
+				System.out.print(c + " ");
+			}
+			else {
+				System.out.print("_ ");
+			}
+		}
+	}
+	
 }

@@ -9,6 +9,8 @@ public class Main {
 		cryptogram.matchLetterToNumber();
 		cryptogram.initialPrinting();
 		cryptogram.printNumbers();
+		System.out.println("\n");
+		cryptogram.enterLetter('t');
 	}
 	
 	
