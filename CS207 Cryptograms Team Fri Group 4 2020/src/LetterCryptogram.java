@@ -17,46 +17,21 @@ public class LetterCryptogram extends Cryptogram {
 		
 	}
 	*/
-	
-	public void printLetters() {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else { 
-				System.out.print(letEncryptionMapping.get(phrase.charAt(i)) + " ");
-			}
-			
-		}
+
+
+	@Override
+	public void addLetter(String c, String n) {
+
 	}
-	
-	public void matchLetterToLetter() {
-		letEncryptionMapping = new HashMap<Character, Character>();
-		Character[] charArray = new Character[26];
-		
-	    for (int i = 0; i < charArray.length; i++) {
-	        charArray[i] = cryptogramAlphabet[i];
-	    }
-	    Collections.shuffle(Arrays.asList(charArray));
-	    System.out.println();
-	    
-		for (int i = 0; i < 26; i++) {
-			letEncryptionMapping.put(cryptogramAlphabet[i], charArray[i]);
-		} 
+
+	@Override
+	public void undoLetter(String c) {
+
 	}
-	
-	public void enterLetter(char c) {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else if (phrase.charAt(i) == c) {
-				System.out.print(c + " ");
-			}
-			else {
-				System.out.print("_ ");
-			}
-		}
+
+	@Override
+	public boolean isSolved() {
+		return false;
 	}
 	
 	/*

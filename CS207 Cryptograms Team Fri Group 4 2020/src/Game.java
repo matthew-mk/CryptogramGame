@@ -25,15 +25,15 @@ public class Game {
 		while (true) {
 			generateCryptogram(cryptType);
 			while (!cryptogram.isSolved()) {
-				System.out.print("Please enter the symbol you want to solve: ");
-				char letter =
-				cryptogram.makeAttempt(guess);
 				cryptogram.displayPuzzle();
+				System.out.print("Please enter the symbol you want to solve: ");
+				String sym = input.next();
+				System.out.print("\nPlease enter the mapping for that symbol: ");
+				String x = input.next();
+				cryptogram.addLetter(sym, x);
 			}
 		}
 	}
-
-	private char getLetter
 
 	public String cryptTypeDecider() {
 		Random randomInt = new Random();
@@ -59,7 +59,7 @@ public class Game {
 	
 	public void generateCryptogram(String cryptoType) {
 		if (cryptoType.equals("NumberCryptogram")) {
-			cryptogram = new NumberCryptogram();
+			cryptogram = new NumberCryptogram("Hello world");
 		} 
 		else if (cryptoType.equals("LetterCryptogram")) {
 			cryptogram = new LetterCryptogram();

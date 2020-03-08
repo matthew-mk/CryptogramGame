@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class NumberCryptogram extends Cryptogram {
 
@@ -9,6 +6,17 @@ public class NumberCryptogram extends Cryptogram {
 		this.phrase = file;
 		this.userGuess = new HashMap<>();
 		matchLetterToNumber();
+
+		this.encryptedPhrase = new ArrayList<>();
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				encryptedPhrase.add(out);
+			} else {
+				encryptedPhrase.add(c.toString());
+			}
+			encryptedPhrase.add(" ");
+		}
 	}
 	
 	/*
@@ -18,13 +26,13 @@ public class NumberCryptogram extends Cryptogram {
 	*/
 	
 	public void matchLetterToNumber() {
-		this.cryptoMapping= new HashMap<Character, Character>();
+		this.cryptoMapping= new HashMap<String, String>();
 		Integer[] integerArray = new Integer[26];
 
-		HashSet<Character> unique = new HashSet<>();
+		HashSet<String> unique = new HashSet<>();
 		for (Character c: phrase.toCharArray()) {
 			if (Character.isDigit(c) || Character.isLetter(c)) {
-				unique.add(c);
+				unique.add(c.toString());
 			}
 		}
 		
@@ -34,33 +42,21 @@ public class NumberCryptogram extends Cryptogram {
 	    Collections.shuffle(Arrays.asList(integerArray));
 
 	    int i = 0;
-		for (Character c: unique) {
-			cryptoMapping.put(c, integerArray[i]);
+		for (String c: unique) {
+			cryptoMapping.put(c, integerArray[i].toString());
+			i++;
 		} 
 	}
-	
-	public void enterLetter(char c) {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else if (phrase.charAt(i) == c) {
-				System.out.print(c + " ");
-			}
-			else {
-				System.out.print("_ ");
-			}
-		}
+
+
+	@Override
+	public void addLetter(String c, String n) {
+		userGuess.put(c, n);
 	}
 
 	@Override
-	public void addLetter(Character c, Character n) {
-
-	}
-
-	@Override
-	public void undoLetter(Character c) {
-
+	public void undoLetter(String c) {
+		userGuess.remove(c);
 	}
 
 	@Override

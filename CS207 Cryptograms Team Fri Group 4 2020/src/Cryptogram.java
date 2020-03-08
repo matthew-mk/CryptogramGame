@@ -2,34 +2,40 @@ import java.util.*;
 
 public abstract class Cryptogram {
 
-	protected HashMap<Character, Character> userGuess;
-	protected HashMap<Character, Character> cryptoMapping;
+	protected HashMap<String, String> userGuess;
+	protected HashMap<String, String> cryptoMapping;
 	protected String phrase;
+	protected ArrayList<String> encryptedPhrase;
 	
-	public abstract void addLetter(Character c, Character n);
-	public abstract void undoLetter(Character c);
+	public abstract void addLetter(String c, String n);
+	public abstract void undoLetter(String c);
 	public abstract boolean isSolved();
 
-	public abstract void display();
-
 	public void displayPuzzle() {
+		System.out.println(userGuess);
 		System.out.println("The current state is: ");
-		for (Character c: cryptoMapping.keySet()) {
-			System.out.print(c);
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				System.out.print(out);
+			} else {
+				System.out.print(c);
+			}
+			System.out.print(' ');
 		}
 
 		System.out.println();
 
-		for (Character c: phrase.toCharArray()) {
-			Character mapping = userGuess.get(c);
-			if (!Character.isLetter(c) && !Character.isDigit(c)) {
+		for (String c: encryptedPhrase) {
+			if (c.equals(" ")) {
 				System.out.print(' ');
-			} else if (mapping != null) {
-				System.out.print(c);
+			} else if (userGuess.containsKey(c)) {
+				System.out.print(userGuess.get(c));
 			} else {
-				System.out.print('_');
+				System.out.print("_ ");
 			}
 		}
+		System.out.println();
 	}
 	
 }
