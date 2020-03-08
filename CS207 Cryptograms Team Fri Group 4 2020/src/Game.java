@@ -76,7 +76,6 @@ public class Game {
 		System.out.print("\nPlease enter the mapping for that symbol: ");
 		String x = input.next();
 
-		System.out.println(cryptogram.hasUserGuess(x));
 		if (cryptogram.hasUserGuess(x)) {
 			System.out.println("That character is already mapped.");
 		} else {
