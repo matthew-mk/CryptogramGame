@@ -53,7 +53,7 @@ public class Cryptogram {
 				System.out.print("   ");
 			}
 			else if (phrase.charAt(i) == c) {
-				phrase.replace('t', ' ');
+				phrase.replace(c, ' ');
 				System.out.print("_ ");
 				visibleLetters.put(phrase.charAt(i), false);
 			}
