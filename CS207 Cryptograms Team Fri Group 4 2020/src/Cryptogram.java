@@ -14,6 +14,9 @@ public abstract class Cryptogram {
 	public boolean hasMapping(String s) {
 		return cryptoMapping.containsKey(s);
 	}
+	public boolean hasUserGuess(String s) { 
+	    return userGuess.containsValue(s); 
+	}
 
 	public void displayPuzzle() {
 		System.out.println(userGuess);
