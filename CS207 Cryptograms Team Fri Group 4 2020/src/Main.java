@@ -12,7 +12,7 @@ public class Main {
 		System.out.println("\n");
 		cryptogram.enterLetter('t');	// test for letter t
 		System.out.println("\n");
-		cryptogram.enterLetter('s');
+		cryptogram.enterLetter('s');	// test for letter s
 		System.out.println("\n");
 	}
 	

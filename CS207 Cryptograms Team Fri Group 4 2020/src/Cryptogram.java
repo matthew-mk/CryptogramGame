@@ -16,6 +16,7 @@ public class Cryptogram {
 	public ArrayList<Integer> encryptedMessage;
 	public HashMap<Character, Integer> numEncryptionMapping;
 	public HashMap<Character, Character> letEncryptionMapping;
+	public HashMap<Character, Boolean> visibleLetters;
 	
 	
 	public String getPhrase() {

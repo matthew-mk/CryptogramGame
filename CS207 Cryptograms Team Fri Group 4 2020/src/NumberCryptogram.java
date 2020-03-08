@@ -24,6 +24,9 @@ public class NumberCryptogram extends Cryptogram {
 			if (phrase.charAt(i) == ' ') {
 				System.out.print("   ");
 			}
+			else if (phrase.charAt(i) == '.') {
+				System.out.print(".");
+			}
 			else { 
 				System.out.print(numEncryptionMapping.get(phrase.charAt(i)) + " ");
 			}
@@ -33,6 +36,7 @@ public class NumberCryptogram extends Cryptogram {
 	
 	public void matchLetterToNumber() {
 		numEncryptionMapping = new HashMap<Character, Integer>();
+		visibleLetters = new HashMap<Character, Boolean>();
 		Integer[] integerArray = new Integer[26];
 		
 	    for (int i = 0; i < integerArray.length; i++) {
@@ -43,6 +47,7 @@ public class NumberCryptogram extends Cryptogram {
 	    
 		for (int i = 0; i < 26; i++) {
 			numEncryptionMapping.put(cryptogramAlphabet[i], integerArray[i]);
+			visibleLetters.put(cryptogramAlphabet[i], false);
 		} 
 	}
 	
@@ -53,6 +58,9 @@ public class NumberCryptogram extends Cryptogram {
 			}
 			else if (phrase.charAt(i) == c) {
 				System.out.print(c + " ");
+			}
+			else if (visibleLetters.get(phrase.charAt(i)) == true) {
+				System.out.print(phrase.charAt(i) + " ");
 			}
 			else {
 				System.out.print("_ ");
