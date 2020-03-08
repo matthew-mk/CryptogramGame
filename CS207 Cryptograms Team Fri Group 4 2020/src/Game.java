@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Game {
 	
@@ -19,6 +20,20 @@ public class Game {
 		cryptType = cryptTypeDecider();
 	}
 
+	public void run() {
+		Scanner input = new Scanner(System.in);
+		while (true) {
+			generateCryptogram(cryptType);
+			while (!cryptogram.isSolved()) {
+				System.out.print("Please enter the symbol you want to solve: ");
+				char letter =
+				cryptogram.makeAttempt(guess);
+				cryptogram.displayPuzzle();
+			}
+		}
+	}
+
+	private char getLetter
 
 	public String cryptTypeDecider() {
 		Random randomInt = new Random();

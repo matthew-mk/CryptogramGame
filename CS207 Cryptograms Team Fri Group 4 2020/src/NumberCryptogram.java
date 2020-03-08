@@ -1,16 +1,14 @@
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class NumberCryptogram extends Cryptogram {
-	
-	
-	public void Cryptogram(String file) {
-		
-	}
-	
-	public void Cryptogram() {
-		
+
+	public NumberCryptogram(String file) {
+		this.phrase = file;
+		this.userGuess = new HashMap<>();
+		matchLetterToNumber();
 	}
 	
 	/*
@@ -19,30 +17,25 @@ public class NumberCryptogram extends Cryptogram {
 	}
 	*/
 	
-	public void printNumbers() {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else { 
-				System.out.print(numEncryptionMapping.get(phrase.charAt(i)) + " ");
-			}
-			
-		}
-	}
-	
 	public void matchLetterToNumber() {
-		numEncryptionMapping = new HashMap<Character, Integer>();
+		this.cryptoMapping= new HashMap<Character, Character>();
 		Integer[] integerArray = new Integer[26];
+
+		HashSet<Character> unique = new HashSet<>();
+		for (Character c: phrase.toCharArray()) {
+			if (Character.isDigit(c) || Character.isLetter(c)) {
+				unique.add(c);
+			}
+		}
 		
 	    for (int i = 0; i < integerArray.length; i++) {
 	        integerArray[i] = i + 1;
 	    }
 	    Collections.shuffle(Arrays.asList(integerArray));
-	    System.out.println();
-	    
-		for (int i = 0; i < 26; i++) {
-			numEncryptionMapping.put(cryptogramAlphabet[i], integerArray[i]);
+
+	    int i = 0;
+		for (Character c: unique) {
+			cryptoMapping.put(c, integerArray[i]);
 		} 
 	}
 	
@@ -58,6 +51,21 @@ public class NumberCryptogram extends Cryptogram {
 				System.out.print("_ ");
 			}
 		}
+	}
+
+	@Override
+	public void addLetter(Character c, Character n) {
+
+	}
+
+	@Override
+	public void undoLetter(Character c) {
+
+	}
+
+	@Override
+	public boolean isSolved() {
+		return false;
 	}
 	
 	
