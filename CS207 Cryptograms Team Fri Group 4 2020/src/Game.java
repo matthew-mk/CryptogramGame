@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Game {
 	
@@ -26,11 +24,16 @@ public class Game {
 			generateCryptogram(cryptType);
 			while (!cryptogram.isSolved()) {
 				cryptogram.displayPuzzle();
-				System.out.print("Please enter the symbol you want to solve: ");
-				String sym = input.next();
-				System.out.print("\nPlease enter the mapping for that symbol: ");
-				String x = input.next();
-				cryptogram.addLetter(sym, x);
+				System.out.print("Would you like to add or remove a character? ");
+
+				String ans = input.next();
+				if (ans.equals("add")) {
+					enterLetter();
+				} else if (ans.equals("remove")) {
+					undoLetter();
+				} else {
+					System.out.println("Command not understood.");
+				}
 			}
 		}
 	}
@@ -67,11 +70,30 @@ public class Game {
 	}
 	
 	public void enterLetter() {
-		
+		Scanner input = new Scanner(System.in);
+		System.out.print("Which character would you like to map? ");
+		String sym = input.next();
+		System.out.print("\nPlease enter the mapping for that symbol: ");
+		String x = input.next();
+
+		if (!cryptogram.hasMapping(x)) {
+			System.out.println("That character is already mapped.");
+ 		} else {
+			cryptogram.addLetter(sym, x);
+		}
+		//input.close();
 	}
 	
 	public void undoLetter() {
-		
+		Scanner input = new Scanner(System.in);
+		System.out.print("Which character would you like to remove?");
+		String sym = input.next();
+		if (!cryptogram.hasMapping(sym)) {
+			cryptogram.undoLetter(sym);
+		} else {
+			System.out.print("That character is not mapped.");
+		}
+		//input.close();
 	}
 	
 	public void viewFrequencies() {

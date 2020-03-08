@@ -11,6 +11,10 @@ public abstract class Cryptogram {
 	public abstract void undoLetter(String c);
 	public abstract boolean isSolved();
 
+	public boolean hasMapping(String s) {
+		return cryptoMapping.containsKey(s);
+	}
+
 	public void displayPuzzle() {
 		System.out.println(userGuess);
 		System.out.println("The current state is: ");
