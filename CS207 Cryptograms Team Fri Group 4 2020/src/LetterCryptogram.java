@@ -35,7 +35,7 @@ public class LetterCryptogram extends Cryptogram {
 		Character[] charArray = new Character[26];
 		
 	    for (int i = 0; i < charArray.length; i++) {
-	        charArray[i] = cryptogramAlphabet[i];
+	        charArray[i] = cryptogramAlphabetUpperCase[i];
 	    }
 	    Collections.shuffle(Arrays.asList(charArray));
 	    System.out.println();
