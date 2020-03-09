@@ -1,68 +1,71 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class LetterCryptogram extends Cryptogram {
-	
-	public void Cryptogram(String file) {
-		
+
+	public LetterCryptogram(String file) {
+		this.phrase = file;
+		this.userGuess = new HashMap<>();
+		matchLetterToLetter();
+
+		this.encryptedPhrase = new ArrayList<>();
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				encryptedPhrase.add(out);
+			} else {
+				encryptedPhrase.add(c.toString());
+			}
+			encryptedPhrase.add(" ");
+		}
 	}
-	
-	public void Cryptogram() {
-		
-	}
-	
+
 	/*
 	public char getPlainLetter(char cryptoLetter) {
 		
 	}
 	*/
-	
-	public void printLetters() {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
+
+	public void matchLetterToLetter() {
+		this.cryptoMapping = new HashMap<>();
+		this.answerMapping = new HashMap<>();
+
+		HashSet<String> unique = new HashSet<>();
+		for (Character c: phrase.toCharArray()) {
+			if (Character.isDigit(c) || Character.isLetter(c)) {
+				unique.add(c.toString());
 			}
-			else { 
-				System.out.print(letEncryptionMapping.get(phrase.charAt(i)) + " ");
-			}
-			
+		}
+
+		String[] letterArray = new String[26];
+		for (char ch = 'a'; ch <= 'z'; ch++)
+		{
+			letterArray[ch - 'a'] = String.valueOf(ch);
+		}
+		Collections.shuffle(Arrays.asList(letterArray));
+
+		int i = 0;
+		for (String c: unique) {
+			cryptoMapping.put(c, letterArray[i]);
+			answerMapping.put(letterArray[i], c);
+			i++;
 		}
 	}
-	
-	public void matchLetterToLetter() {
-		letEncryptionMapping = new HashMap<Character, Character>();
-		visibleLetters = new HashMap<Character, Boolean>();
-		Character[] charArray = new Character[26];
-		
-	    for (int i = 0; i < charArray.length; i++) {
-	        charArray[i] = cryptogramAlphabetUpperCase[i];
-	    }
-	    Collections.shuffle(Arrays.asList(charArray));
-	    System.out.println();
-	    
-		for (int i = 0; i < 26; i++) {
-			letEncryptionMapping.put(cryptogramAlphabet[i], charArray[i]);
-			visibleLetters.put(cryptogramAlphabet[i], false);
-		} 
-	}
-	
-	public void enterLetter(char c) {
+
+	/*
+	public void undoLetter(char c) {
 		for (int i = 0; i < getPhraseLength(); i++) {
 			if (phrase.charAt(i) == ' ') {
 				System.out.print("   ");
 			}
 			else if (phrase.charAt(i) == c) {
-				visibleLetters.put(phrase.charAt(i), true);
-				System.out.print(c + " ");
-			}
-			else if (visibleLetters.get(phrase.charAt(i)) == true) {
-				System.out.print(phrase.charAt(i) + " ");
+				phrase.replace('t', ' ');
+				System.out.print("_ ");
+				
 			}
 			else {
-				System.out.print("_ ");
+				
 			}
 		}
 	}
-	
+	*/
 }

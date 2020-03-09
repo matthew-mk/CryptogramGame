@@ -1,25 +1,29 @@
+import java.util.*;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		
-		Game game = new Game("player", "LetterCryptogram");
-		LetterCryptogram cryptogram = new LetterCryptogram();
-		
-		cryptogram.matchLetterToLetter();
-		cryptogram.initialPrinting();
-		cryptogram.printLetters();
-		System.out.println("\n");
-		cryptogram.enterLetter('t');
-		System.out.println("\n");
-		cryptogram.enterLetter('s');		// Testing the different functions
-		System.out.println("\n");
-		cryptogram.enterLetter('w');
-		System.out.println("\n");
-		cryptogram.undoLetter('t');
-		System.out.println("\n");
-		cryptogram.undoLetter('s');
-		
+
+		Scanner input = new Scanner(System.in);
+		System.out.println("Do you want to play a \"Number\" or a \"Letter\" cryptogram?");
+		String cType;
+		while(true){
+			cType = input.next();
+			if (cType.equals("Number")){
+				cType = "NumberCryptogram";
+				break;
+			}
+			else if (cType.equals("Letter")){
+				cType = "LetterCryptogram";
+				break;
+			}
+			else{
+				System.out.println("You have entered an invalid type.");
+			}
+		}
+
+		Game game = new Game("player", cType);
+		game.run();
 	}
 	
 	

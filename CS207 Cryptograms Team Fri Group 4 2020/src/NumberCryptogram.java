@@ -1,16 +1,22 @@
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class NumberCryptogram extends Cryptogram {
-	
-	
-	public void Cryptogram(String file) {
-		
-	}
-	
-	public void Cryptogram() {
-		
+
+	public NumberCryptogram(String file) {
+		this.phrase = file;
+		this.userGuess = new HashMap<>();
+		matchLetterToNumber();
+
+		this.encryptedPhrase = new ArrayList<>();
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				encryptedPhrase.add(out);
+			} else {
+				encryptedPhrase.add(c.toString());
+			}
+			encryptedPhrase.add(" ");
+		}
 	}
 	
 	/*
@@ -19,55 +25,48 @@ public class NumberCryptogram extends Cryptogram {
 	}
 	*/
 	
-	public void printNumbers() {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else if (phrase.charAt(i) == '.') {
-				System.out.print(".");
-			}
-			else { 
-				System.out.print(numEncryptionMapping.get(phrase.charAt(i)) + " ");
-			}
-			
-		}
-	}
-	
 	public void matchLetterToNumber() {
-		numEncryptionMapping = new HashMap<Character, Integer>();
-		visibleLetters = new HashMap<Character, Boolean>();
+		this.cryptoMapping = new HashMap<String, String>();
+		this.answerMapping = new HashMap<String, String>();
+
+		HashSet<String> unique = new HashSet<>();
+		for (Character c: phrase.toCharArray()) {
+			if (Character.isDigit(c) || Character.isLetter(c)) {
+				unique.add(c.toString());
+			}
+		}
+
 		Integer[] integerArray = new Integer[26];
-		
 	    for (int i = 0; i < integerArray.length; i++) {
 	        integerArray[i] = i + 1;
 	    }
 	    Collections.shuffle(Arrays.asList(integerArray));
-	    System.out.println();
-	    
-		for (int i = 0; i < 26; i++) {
-			numEncryptionMapping.put(cryptogramAlphabet[i], integerArray[i]);
-			visibleLetters.put(cryptogramAlphabet[i], false);
-		} 
+
+	    int i = 0;
+		for (String c: unique) {
+			cryptoMapping.put(c, integerArray[i].toString());
+			answerMapping.put(integerArray[i].toString(), c);
+			i++;
+		}
 	}
-	
-	public void enterLetter(char c) {
+
+	/*
+	public void undoLetter(char c) {
 		for (int i = 0; i < getPhraseLength(); i++) {
 			if (phrase.charAt(i) == ' ') {
 				System.out.print("   ");
 			}
 			else if (phrase.charAt(i) == c) {
-			    visibleLetters.put(phrase.charAt(i), true);
-				System.out.print(c + " ");
-			}
-			else if (visibleLetters.get(phrase.charAt(i)) == true) {
-				System.out.print(phrase.charAt(i) + " ");
+				phrase.replace('t', ' ');
+				System.out.print("_ ");
+				
 			}
 			else {
-				System.out.print("_ ");
+				
 			}
 		}
 	}
-		
+	*/
+	
 
 }

@@ -1,70 +1,72 @@
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
-public class Cryptogram {
-	
-	public String phrase = "two birds with the one stone";	// for testing
-	public char[] cryptogramAlphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-	public char[] cryptogramAlphabetUpperCase = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+public abstract class Cryptogram {
 
-	
-	public Integer[] integerArray;
-	public Character[] charArray;
-	public ArrayList<String> cryptogramPhrases;
-	public ArrayList<Integer> encryptedMessage;
-	public HashMap<Character, Integer> numEncryptionMapping;
-	public HashMap<Character, Character> letEncryptionMapping;
-	public HashMap<Character, Boolean> visibleLetters;
-	
-	
-	public String getPhrase() {
-		return phrase;
+	protected HashMap<String, String> userGuess;
+	protected HashMap<String, String> cryptoMapping;
+	protected HashMap<String, String> answerMapping;
+	protected String phrase;
+	protected ArrayList<String> encryptedPhrase;
+
+	public boolean hasMapping(String s) {
+		return cryptoMapping.containsKey(s);
 	}
-	
-	public int getPhraseLength() {
-		return phrase.length();
-	}
-	
-	/*
-	public ArrayList<Integer> getFrequencies() {
-		
-	
-	}
-	*/
-	
-	
-	public void initialPrinting() {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
+	public boolean hasUserGuess(String s) { return userGuess.containsValue(s); }
+
+	public void displayPuzzle() {
+		System.out.println(userGuess);
+		System.out.println("The current state is: ");
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				System.out.print(out);
+			} else {
+				System.out.print(c);
 			}
-			else {
+			System.out.print(' ');
+		}
+
+		System.out.println();
+
+		for (String c: encryptedPhrase) {
+			if (c.equals(" ")) {
+				System.out.print(' ');
+			} else if (userGuess.containsKey(c)) {
+				System.out.print(userGuess.get(c));
+			} else {
 				System.out.print("_ ");
 			}
 		}
-		System.out.println("\n");
+		System.out.println();
 	}
-	
-		public void undoLetter(char c) {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else if (phrase.charAt(i) == c) {
-				phrase.replace(c, ' ');
-				System.out.print("_ ");
-				visibleLetters.put(phrase.charAt(i), false);
-			}
-			else if (visibleLetters.get(phrase.charAt(i)) == true) {
-				System.out.print(phrase.charAt(i) + " ");
-			}
-			else {
-				System.out.print("_ ");
-			}
+
+
+	public void addLetter(String c, String n) {
+		userGuess.put(c, n);
+	}
+
+
+	public void undoLetter(String c) {
+		userGuess.remove(c);
+	}
+
+	public boolean isSolved() {
+		if(userGuess.size() < cryptoMapping.size()) {
+			return false;
+		}
+		if(userGuess.equals(answerMapping)) {
+			System.out.println("You have solved the cryptogram.");
+			return true;
+		}
+		else{
+			System.out.println("Your solution is incorrect.");
+			return false;
 		}
 	}
 
-	
+	public Set<String> getKeyList(){
+		return answerMapping.keySet();
+	}
+
 }
+
