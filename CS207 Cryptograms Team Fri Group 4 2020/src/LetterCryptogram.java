@@ -19,12 +19,6 @@ public class LetterCryptogram extends Cryptogram {
 		}
 	}
 
-	/*
-	public char getPlainLetter(char cryptoLetter) {
-		
-	}
-	*/
-
 	public void matchLetterToLetter() {
 		this.cryptoMapping = new HashMap<>();
 		this.answerMapping = new HashMap<>();
@@ -50,22 +44,11 @@ public class LetterCryptogram extends Cryptogram {
 			i++;
 		}
 	}
-
+	
 	/*
-	public void undoLetter(char c) {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else if (phrase.charAt(i) == c) {
-				phrase.replace('t', ' ');
-				System.out.print("_ ");
-				
-			}
-			else {
-				
-			}
-		}
+	public char getPlainLetter(char cryptoLetter) {
+		
 	}
 	*/
+
 }
