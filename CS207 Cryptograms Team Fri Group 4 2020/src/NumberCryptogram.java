@@ -19,12 +19,6 @@ public class NumberCryptogram extends Cryptogram {
 		}
 	}
 	
-	/*
-	public char getPlainLetter(int cryptoValue) {
-		
-	}
-	*/
-	
 	public void matchLetterToNumber() {
 		this.cryptoMapping = new HashMap<String, String>();
 		this.answerMapping = new HashMap<String, String>();
@@ -51,22 +45,9 @@ public class NumberCryptogram extends Cryptogram {
 	}
 
 	/*
-	public void undoLetter(char c) {
-		for (int i = 0; i < getPhraseLength(); i++) {
-			if (phrase.charAt(i) == ' ') {
-				System.out.print("   ");
-			}
-			else if (phrase.charAt(i) == c) {
-				phrase.replace('t', ' ');
-				System.out.print("_ ");
-				
-			}
-			else {
-				
-			}
-		}
+	public char getPlainLetter(int cryptoValue) {
+		
 	}
 	*/
-	
 
 }
