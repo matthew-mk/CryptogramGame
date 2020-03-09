@@ -5,15 +5,15 @@ public abstract class Cryptogram {
 	protected HashMap<String, String> userGuess;
 	protected HashMap<String, String> cryptoMapping;
 	protected HashMap<String, String> answerMapping;
-	protected String phrase;
 	protected ArrayList<String> encryptedPhrase;
+	protected String phrase;
 
 	public boolean hasMapping(String s) {
 		return cryptoMapping.containsKey(s);
 	}
 	
 	public boolean hasUserGuess(String s) { 
-	    return userGuess.containsValue(s); 
+		return userGuess.containsValue(s); 
 	}
 
 	public void displayPuzzle() {
@@ -58,7 +58,8 @@ public abstract class Cryptogram {
 			return false;
 		}
 		if(userGuess.equals(answerMapping)) {
-			System.out.println("You have solved the cryptogram.");
+			System.out.println("\nYou have solved the cryptogram.");
+			System.out.println("The cryptogram was: " + phrase);
 			return true;
 		}
 		else{
@@ -67,9 +68,8 @@ public abstract class Cryptogram {
 		}
 	}
 
-	public Set<String> getKeyList() {
+	public Set<String> getKeyList(){
 		return answerMapping.keySet();
 	}
 
 }
-
