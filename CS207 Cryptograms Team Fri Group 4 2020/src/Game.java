@@ -78,12 +78,13 @@ public class Game {
 		Random randomInt = new Random();
 		int pId;
 		pId = randomInt.nextInt(phrases.size() - 1);
+		String currentPhrase = phrases.get(pId);
 
 		if (cryptoType.equals("NumberCryptogram")) {
-			cryptogram = new NumberCryptogram(phrases.get(pId));
+			cryptogram = new NumberCryptogram(currentPhrase);
 		} 
 		else if (cryptoType.equals("LetterCryptogram")) {
-			cryptogram = new LetterCryptogram(phrases.get(pId));
+			cryptogram = new LetterCryptogram(currentPhrase);
 		}
 	}
 
