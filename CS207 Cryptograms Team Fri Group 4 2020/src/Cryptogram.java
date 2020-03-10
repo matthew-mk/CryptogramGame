@@ -60,6 +60,7 @@ public abstract class Cryptogram {
 		if(userGuess.equals(answerMapping)) {
 			System.out.println("\nYou have solved the cryptogram.");
 			System.out.println("\nThe phrase was: " + phrase);
+			System.out.println();
 			return true;
 		}
 		else{
