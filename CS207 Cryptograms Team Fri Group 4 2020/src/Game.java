@@ -3,11 +3,13 @@ import java.io.*;
 
 public class Game {
 	
+	ArrayList<String> phrases;
 	public HashMap<Player, Game> playerGameMapping;
 	public Cryptogram cryptogram;
 	public Player currentPlayer;
 	public String cryptType;
-	
+	public boolean quit = false;
+	int pId;
 
 	public Game(String p, String cryptType) {
 		currentPlayer = new Player(p);
@@ -21,9 +23,9 @@ public class Game {
 
 	public void run() {
 		Scanner input = new Scanner(System.in);
-		while (true) {
+		while (!quit) {
 			generateCryptogram(cryptType);
-			while (!cryptogram.isSolved()) {
+			while (!cryptogram.isSolved() && !quit) {
 				cryptogram.displayPuzzle();
 				System.out.print("Would you like to add or remove a character? ");
 
@@ -32,11 +34,23 @@ public class Game {
 					enterLetter();
 				} else if (ans.equals("remove")) {
 					undoLetter();
-				} else {
+				}
+				else {
 					System.out.println("Command not understood.");
 				}
 			}
-			break;
+			System.out.println("Would you like to play another cryptogram? Please type 'Yes' or 'No' ");
+			String yesNo = input.next();
+			if (yesNo.equals("Yes")) {
+				generateCryptogram(cryptType);
+			}
+			else if (yesNo.equals("No")) {
+				System.out.println("\nThe application has been closed.");
+				quit = true;
+			}
+			else {
+				System.out.println("Command not understood.");
+			}
 		}
 	}
 
@@ -63,7 +77,7 @@ public class Game {
 	}
 	
 	public void generateCryptogram(String cryptoType) {
-		ArrayList<String> phrases = new ArrayList<>();
+		phrases = new ArrayList<>();
 		File file = new File("Crypto-Phrases.txt");
 		try {
 			Scanner reader = new Scanner(file);
@@ -76,7 +90,6 @@ public class Game {
 			System.out.println(e);
 		}
 		Random randomInt = new Random();
-		int pId;
 		pId = randomInt.nextInt(phrases.size() - 1);
 		String currentPhrase = phrases.get(pId);
 
@@ -138,3 +151,4 @@ public class Game {
 	
 	
 }
+
