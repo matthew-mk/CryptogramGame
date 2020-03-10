@@ -4,12 +4,12 @@ import java.io.*;
 public class Game {
 	
 	public ArrayList<String> phrases;
+	public int phrasesCounter = 0;
 	public HashMap<Player, Game> playerGameMapping;
 	public Cryptogram cryptogram;
 	public Player currentPlayer;
 	public String cryptType;
 	public boolean quit = false;
-	int pId;
 
 	public Game(String p, String cryptType) {
 		currentPlayer = new Player(p);
@@ -42,6 +42,7 @@ public class Game {
 			System.out.println("Would you like to play another cryptogram? Please type 'Yes' or 'No' ");
 			String yesNo = input.next();
 			if (yesNo.equals("Yes")) {
+				phrasesCounter += 1;
 				generateCryptogram(cryptType);
 			}
 			else if (yesNo.equals("No")) {
@@ -89,9 +90,7 @@ public class Game {
 		catch (FileNotFoundException e){
 			System.out.println(e);
 		}
-		Random randomInt = new Random();
-		pId = randomInt.nextInt(phrases.size() - 1);
-		String currentPhrase = phrases.get(pId);
+		String currentPhrase = phrases.get(phrasesCounter);
 
 		if (cryptoType.equals("NumberCryptogram")) {
 			cryptogram = new NumberCryptogram(currentPhrase);
@@ -151,4 +150,5 @@ public class Game {
 	
 	
 }
+
 
