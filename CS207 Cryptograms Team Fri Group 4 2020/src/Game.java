@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Game {
 	
-	ArrayList<String> phrases;
+	public ArrayList<String> phrases;
 	public HashMap<Player, Game> playerGameMapping;
 	public Cryptogram cryptogram;
 	public Player currentPlayer;
