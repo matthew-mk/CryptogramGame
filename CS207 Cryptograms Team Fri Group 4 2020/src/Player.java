@@ -19,7 +19,7 @@ public class Player {
 	
 	
 	public void updateAccuracy() {
-		accuracy = (accurateGuesses / totalGuesses) * 100;
+		accuracy = (accurateGuesses * 100 / totalGuesses);
 	}
 	
 	public void incrementCryptogramsCompleted() {
@@ -34,6 +34,14 @@ public class Player {
 		return accuracy;
 	}
 	
+	public int getAccurateGuesses() {
+		return accurateGuesses;
+	}
+	
+	public int getTotalGuesses() {
+		return totalGuesses;
+	}
+	
 	public int getNumCryptogramsCompleted() {
 		return cryptogramsCompleted;
 	}
@@ -43,3 +51,4 @@ public class Player {
 	}
 
 }
+
