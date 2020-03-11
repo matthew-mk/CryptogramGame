@@ -10,6 +10,7 @@ public class Game {
 	public Player currentPlayer;
 	public String cryptType;
 	public boolean quit = false;
+	public Formatter formatter;
 
 	public Game(String p, String cryptType) {
 		currentPlayer = new Player(p);
@@ -23,11 +24,13 @@ public class Game {
 
 	public void run() {
 		Scanner input = new Scanner(System.in);
+		loadData();
 		while (!quit) {
 			generateCryptogram(cryptType);
 			while (!cryptogram.isSolved() && !quit) {
+				System.out.printf("Cryptograms Completed: %d\nCryptograms Played: %d\nAccuracy: %d\n", currentPlayer.getNumCryptogramsCompleted(), currentPlayer.getNumCryptogramsPlayed(), currentPlayer.getAccuracy());
 				cryptogram.displayPuzzle();
-				System.out.print("Would you like to add or remove a character? ");
+				System.out.print("\nWould you like to add or remove a character? ");
 
 				String ans = input.next();
 				if (ans.equals("add")) {
@@ -39,6 +42,9 @@ public class Game {
 					System.out.println("Command not understood.");
 				}
 			}
+			currentPlayer.incrementCryptogramsCompleted();
+			currentPlayer.incrementCryptogramsPlayed();
+			saveData();
 			System.out.println("Would you like to play another cryptogram? Please type 'Yes' or 'No' ");
 			String yesNo = input.next();
 			if (yesNo.equals("Yes")) {
@@ -136,6 +142,37 @@ public class Game {
 		
 	}
 	
+	public void saveData() {
+		try {
+			formatter = new Formatter("PlayerData.txt");
+		}
+		catch (Exception e) {
+			System.out.println("Error: Data could not be saved.");
+		}
+		
+		formatter.format("%d %d %d", currentPlayer.getNumCryptogramsCompleted(), currentPlayer.getNumCryptogramsPlayed(), currentPlayer.getAccuracy());
+		formatter.close();
+	}
+	
+	public void loadData() {
+		Scanner input = new Scanner(System.in);
+		
+		try {
+			input = new Scanner(new File("PlayerData.txt"));
+		}
+		catch (Exception e) {
+			System.out.println("File could not be found.");
+		}
+		
+		while (input.hasNext()) {
+			currentPlayer.cryptogramsCompleted = input.nextInt();
+			currentPlayer.cryptogramsPlayed = input.nextInt();
+			currentPlayer.accuracy = input.nextInt();
+		}
+		
+		input.close();
+	}
+	
 	public void saveGame() {
 		
 	}
@@ -150,5 +187,4 @@ public class Game {
 	
 	
 }
-
 
