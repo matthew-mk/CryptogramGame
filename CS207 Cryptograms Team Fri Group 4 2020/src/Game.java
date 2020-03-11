@@ -122,6 +122,16 @@ public class Game {
 		else {
 			cryptogram.addLetter(sym, x);
 		}
+		
+		if (sym.equals(cryptogram.cryptoMapping.get(x))) {
+			currentPlayer.accurateGuesses++;
+			currentPlayer.totalGuesses++;
+			currentPlayer.updateAccuracy();
+		}
+		else {
+			currentPlayer.totalGuesses++;
+			currentPlayer.updateAccuracy();
+		}
 		//input.close();
 	}
 
@@ -150,7 +160,7 @@ public class Game {
 			System.out.println("Error: Data could not be saved.");
 		}
 		
-		formatter.format("%d %d %d", currentPlayer.getNumCryptogramsCompleted(), currentPlayer.getNumCryptogramsPlayed(), currentPlayer.getAccuracy());
+		formatter.format("%d %d %d %d %d", currentPlayer.getNumCryptogramsCompleted(), currentPlayer.getNumCryptogramsPlayed(), currentPlayer.getAccurateGuesses(), currentPlayer.getTotalGuesses(), currentPlayer.getAccuracy());
 		formatter.close();
 	}
 	
@@ -167,6 +177,8 @@ public class Game {
 		while (input.hasNext()) {
 			currentPlayer.cryptogramsCompleted = input.nextInt();
 			currentPlayer.cryptogramsPlayed = input.nextInt();
+			currentPlayer.accurateGuesses = input.nextInt();
+			currentPlayer.totalGuesses = input.nextInt();
 			currentPlayer.accuracy = input.nextInt();
 		}
 		
