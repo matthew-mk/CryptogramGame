@@ -22,7 +22,15 @@ public class Main {
 			}
 		}
 
-		Game game = new Game("player", cType);
+		System.out.println("Enter your username: ");
+		String username;
+		while(true) {
+			username = input.next();
+			break;
+
+		}
+		
+		Game game = new Game(username, cType);
 		game.run();
 	}
 	
