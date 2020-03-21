@@ -1,3 +1,4 @@
+import java.nio.file.Files;
 import java.util.*;
 import java.io.*;
 
@@ -35,7 +36,7 @@ public class Game {
 		cryptType = cryptTypeDecider();
 	}
 
-	public void run() {
+	public void run() throws IOException {
 		Scanner input = new Scanner(System.in);
 		loadData();
 		while (!quit) {
@@ -165,19 +166,37 @@ public class Game {
 
 	}
 
-	public void saveData() {
-		try {
-			formatter = new Formatter("PlayerData.txt");
+	public void saveData() throws IOException {
+		File file = new File("PlayerData.txt");
+		List<String> data = Files.readAllLines(file.toPath());
+		String line = new String(String.valueOf(currentPlayer.getNumCryptogramsCompleted() + " ") +
+								String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
+								String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
+								String.valueOf(currentPlayer.getTotalGuesses() + " ") +
+								String.valueOf(currentPlayer.getAccuracy() + " ") +
+								currentPlayer.getUsername());
+		int pos = allPlayers.getPlayerId(currentPlayer);
+		if(pos == data.size()){
+			data.add(line);
 		}
-		catch (Exception e) {
-			System.out.println("Error: Data could not be saved.");
+		else {
+			data.set(pos, line);
 		}
 
-		formatter.format("%d %d %d %d %d %s", currentPlayer.getNumCryptogramsCompleted(), currentPlayer.getNumCryptogramsPlayed(), currentPlayer.getAccurateGuesses(), currentPlayer.getTotalGuesses(), currentPlayer.getAccuracy(), currentPlayer.getUsername());
-		formatter.close();
+		FileWriter writer = new FileWriter("PlayerData.txt");
+		BufferedWriter bwriter = new BufferedWriter(writer);
+		for(String l: data) {
+			bwriter.write(l);
+			bwriter.newLine();
+		}
+
+		bwriter.close();
+		writer.close();
+
 	}
 
 	public void loadData() {
+
 		Scanner input = new Scanner(System.in);
 
 		try {
@@ -188,15 +207,26 @@ public class Game {
 		}
 
 		while (input.hasNext()) {
-			currentPlayer.cryptogramsCompleted = input.nextInt();
-			currentPlayer.cryptogramsPlayed = input.nextInt();
-			currentPlayer.accurateGuesses = input.nextInt();
-			currentPlayer.totalGuesses = input.nextInt();
-			currentPlayer.accuracy = input.nextInt();
-			break;
+			int cryptogramsCompleted = input.nextInt();
+			int cryptogramsPlayed = input.nextInt();
+			int accurateGuesses = input.nextInt();
+			int totalGuesses = input.nextInt();
+			int accuracy = input.nextInt();
+			String username = input.next();
+			if(username.equals(currentPlayer.getUsername())){
+				currentPlayer.cryptogramsCompleted = cryptogramsCompleted;
+				currentPlayer.cryptogramsPlayed = cryptogramsPlayed;
+				currentPlayer.accurateGuesses = accurateGuesses;
+				currentPlayer.totalGuesses = totalGuesses;
+				currentPlayer.accuracy = accuracy;
+				break;
+			}
+
 		}
 
 		input.close();
+
+
 	}
 
 	public void saveGame() {
