@@ -23,7 +23,6 @@ public class Players {
 			Player p  = new Player(input.next());
 			addPlayer(p);
 		}
-		getAllPlayerNames();
 	}
 
 
