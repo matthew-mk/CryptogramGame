@@ -16,10 +16,14 @@ public class Players {
 		catch (Exception e) {
 			System.out.println("File could not be found.");
 		}
-		if(input.hasNextLine()) {
-			String line = input.nextLine();
-			System.out.println(line);
+		while(input.hasNext()) {
+			for(int i = 0; i < 5; i++){
+				input.next();
+			}
+			Player p  = new Player(input.next());
+			addPlayer(p);
 		}
+		getAllPlayerNames();
 	}
 
 
@@ -60,6 +64,15 @@ public class Players {
 		for(Player p: allPlayers){
 			System.out.println(p.getUsername());
 		}
+	}
+
+	public int getPlayerId(Player p){
+		for(int i = 0; i < allPlayers.size(); i++){
+			if(p.getUsername().equals(allPlayers.get(i).getUsername())){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 }
