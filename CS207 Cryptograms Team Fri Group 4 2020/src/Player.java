@@ -6,6 +6,7 @@ public class Player {
 	public int totalGuesses;
 	public int cryptogramsPlayed;
 	public int cryptogramsCompleted;
+	public int cryptogramPuzzleNumber;
 
 
 	public Player(String username) {
@@ -14,6 +15,7 @@ public class Player {
 		this.totalGuesses = 0;
 		this.cryptogramsPlayed = 0;
 		this.cryptogramsCompleted = 0;
+		this.cryptogramPuzzleNumber = 0;
 		this.username = username;
 	}
 
@@ -28,6 +30,10 @@ public class Player {
 
 	public void incrementCryptogramsPlayed() {
 		cryptogramsPlayed++;
+	}
+	
+	public void incrementCryptogramPuzzleNumber() {
+		cryptogramPuzzleNumber++;
 	}
 
 	public int getAccuracy() {
@@ -49,9 +55,14 @@ public class Player {
 	public int getNumCryptogramsPlayed() {
 		return cryptogramsPlayed;
 	}
+	
+	public int getCryptogramPuzzleNumber() {
+		return cryptogramPuzzleNumber;
+	}
 
 	public String getUsername(){
 		return this.username;
 	}
 
 }
+
