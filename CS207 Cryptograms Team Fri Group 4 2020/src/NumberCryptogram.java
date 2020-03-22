@@ -20,8 +20,8 @@ public class NumberCryptogram extends Cryptogram {
 	}
 	
 	public void matchLetterToNumber() {
-		this.cryptoMapping = new HashMap<String, String>();
-		this.answerMapping = new HashMap<String, String>();
+		this.cryptoMapping = new HashMap<>();
+		this.answerMapping = new HashMap<>();
 
 		HashSet<String> unique = new HashSet<>();
 		for (Character c: phrase.toCharArray()) {

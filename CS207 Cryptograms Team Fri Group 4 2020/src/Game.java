@@ -9,39 +9,44 @@ public class Game {
 	public Cryptogram cryptogram;
 	public Player currentPlayer;
 	public String cryptType;
-	public boolean quit = false;
 	public Formatter formatter;
 
 	public Game(String p, String cryptType) {
 		currentPlayer = new Player(p);
 		this.cryptType = cryptType;
+		loadPhrases();
 	}
 	
 	public Game(String p) {
 		currentPlayer = new Player(p);
 		cryptType = cryptTypeDecider();
+		loadPhrases();
 	}
 
 	public void run() {
+		promptDataLoading();
 		Scanner input = new Scanner(System.in);
-		loadData();
-		while (!quit) {
+		while (true) {
 			generateCryptogram(cryptType);
-			while (!cryptogram.isSolved() && !quit) {
-				System.out.printf("Cryptograms Completed: %d\nCryptograms Played: %d\nAccuracy: %d\n", currentPlayer.getNumCryptogramsCompleted(), currentPlayer.getNumCryptogramsPlayed(), currentPlayer.getAccuracy());
+			while (!cryptogram.isSolved()) {
+				printPlayerStats();
 				cryptogram.displayPuzzle();
-				System.out.print("\nWould you like to add or remove a character? ");
-
+				System.out.print("You may 'add' a character, 'remove' a character, 'save' this cryptogram or 'load' another one\n>");
 				String ans = input.next();
 				if (ans.equals("add")) {
 					enterLetter();
 				} else if (ans.equals("remove")) {
 					undoLetter();
-				}
-				else {
+				} else if (ans.equals("save")) {
+					saveGame();
+				} else if (ans.equals("load")) {
+					loadGame();
+				} else {
 					System.out.println("Command not understood.");
 				}
 			}
+			System.out.println("YOU WIN!");
+
 			currentPlayer.incrementCryptogramsCompleted();
 			currentPlayer.incrementCryptogramsPlayed();
 			saveData();
@@ -53,7 +58,7 @@ public class Game {
 			}
 			else if (yesNo.equals("No")) {
 				System.out.println("\nThe application has been closed.");
-				quit = true;
+				break;
 			}
 			else {
 				System.out.println("Command not understood.");
@@ -70,6 +75,13 @@ public class Game {
 			return "NumberCryptogram";
 		}
 	}
+
+	public void printPlayerStats() {
+		System.out.printf("Cryptograms Completed: %d\nCryptograms Played: %d\nAccuracy: %d\n",
+				currentPlayer.getNumCryptogramsCompleted(),
+				currentPlayer.getNumCryptogramsPlayed(),
+				currentPlayer.getAccuracy());
+	}
 	
 	public void getHint() {
 		
@@ -82,8 +94,17 @@ public class Game {
 	public void playGame() {
 		
 	}
-	
-	public void generateCryptogram(String cryptoType) {
+
+	/* This function should ask the user if they have a saved account that they want to
+	load, or if they want to start a new record. In the latter case it needs to use their name
+	to create a new player record
+	 */
+	public void promptDataLoading() {
+		Scanner input = new Scanner(System.in);
+
+	}
+
+	public void loadPhrases() {
 		phrases = new ArrayList<>();
 		File file = new File("Crypto-Phrases.txt");
 		try {
@@ -92,12 +113,13 @@ public class Game {
 				phrases.add(reader.nextLine());
 			}
 			reader.close();
+		} catch (FileNotFoundException e){
+			System.out.println("Error: the Crypto-Phrases file was not found.");
 		}
-		catch (FileNotFoundException e){
-			System.out.println(e);
-		}
-		String currentPhrase = phrases.get(phrasesCounter);
-
+	}
+	
+	public void generateCryptogram(String cryptoType) {
+		String currentPhrase = phrases.get(0);
 		if (cryptoType.equals("NumberCryptogram")) {
 			cryptogram = new NumberCryptogram(currentPhrase);
 		} 
