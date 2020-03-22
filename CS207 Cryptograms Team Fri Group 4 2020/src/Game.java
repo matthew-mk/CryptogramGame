@@ -5,7 +5,6 @@ import java.io.*;
 public class Game {
 
 	public ArrayList<String> phrases;
-	public int phrasesCounter = 0;
 	public HashMap<Player, Game> playerGameMapping;
 	public Cryptogram cryptogram;
 	public Players allPlayers = new Players();
@@ -58,11 +57,11 @@ public class Game {
 			}
 			currentPlayer.incrementCryptogramsCompleted();
 			currentPlayer.incrementCryptogramsPlayed();
+			currentPlayer.incrementCryptogramPuzzleNumber();
 			saveData();
 			System.out.println("Would you like to play another cryptogram? Please type 'Yes' or 'No' ");
 			String yesNo = input.next();
 			if (yesNo.equals("Yes")) {
-				phrasesCounter += 1;
 				generateCryptogram(cryptType);
 			}
 			else if (yesNo.equals("No")) {
@@ -110,7 +109,7 @@ public class Game {
 		catch (FileNotFoundException e){
 			System.out.println(e);
 		}
-		String currentPhrase = phrases.get(phrasesCounter);
+		String currentPhrase = phrases.get(currentPlayer.getCryptogramPuzzleNumber());
 
 		if (cryptoType.equals("NumberCryptogram")) {
 			cryptogram = new NumberCryptogram(currentPhrase);
@@ -171,6 +170,7 @@ public class Game {
 		List<String> data = Files.readAllLines(file.toPath());
 		String line = new String(String.valueOf(currentPlayer.getNumCryptogramsCompleted() + " ") +
 								String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
+								String.valueOf(currentPlayer.getCryptogramPuzzleNumber() + " ") +
 								String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
 								String.valueOf(currentPlayer.getTotalGuesses() + " ") +
 								String.valueOf(currentPlayer.getAccuracy() + " ") +
@@ -209,6 +209,7 @@ public class Game {
 		while (input.hasNext()) {
 			int cryptogramsCompleted = input.nextInt();
 			int cryptogramsPlayed = input.nextInt();
+			int cryptogramPuzzleNumber = input.nextInt();
 			int accurateGuesses = input.nextInt();
 			int totalGuesses = input.nextInt();
 			int accuracy = input.nextInt();
@@ -216,6 +217,7 @@ public class Game {
 			if(username.equals(currentPlayer.getUsername())){
 				currentPlayer.cryptogramsCompleted = cryptogramsCompleted;
 				currentPlayer.cryptogramsPlayed = cryptogramsPlayed;
+				currentPlayer.cryptogramPuzzleNumber = cryptogramPuzzleNumber;
 				currentPlayer.accurateGuesses = accurateGuesses;
 				currentPlayer.totalGuesses = totalGuesses;
 				currentPlayer.accuracy = accuracy;
@@ -243,3 +245,4 @@ public class Game {
 
 
 }
+
