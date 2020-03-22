@@ -19,6 +19,28 @@ public class LetterCryptogram extends Cryptogram {
 		}
 	}
 
+	public LetterCryptogram(String phrase, HashMap<String, String> mapping, HashMap<String, String> userGuess) {
+		this.phrase = phrase;
+		this.userGuess = userGuess;
+		this.cryptoMapping = mapping;
+		this.answerMapping = new HashMap<>();
+
+		for (Map.Entry<String, String> entry: cryptoMapping.entrySet()) {
+			answerMapping.put(entry.getValue(), entry.getKey());
+		}
+
+		this.encryptedPhrase = new ArrayList<>();
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				encryptedPhrase.add(out);
+			} else {
+				encryptedPhrase.add(c.toString());
+			}
+			encryptedPhrase.add(" ");
+		}
+	}
+
 	public void matchLetterToLetter() {
 		this.cryptoMapping = new HashMap<>();
 		this.answerMapping = new HashMap<>();
