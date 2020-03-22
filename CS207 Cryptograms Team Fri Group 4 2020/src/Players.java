@@ -17,7 +17,7 @@ public class Players {
 			System.out.println("File could not be found.");
 		}
 		while(input.hasNext()) {
-			for(int i = 0; i < 5; i++){
+			for(int i = 0; i < 6; i++){
 				input.next();
 			}
 			Player p  = new Player(input.next());
