@@ -1,8 +1,9 @@
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		Scanner input = new Scanner(System.in);
 		System.out.println("Do you want to play a \"Number\" or a \"Letter\" cryptogram?");
@@ -29,7 +30,7 @@ public class Main {
 			break;
 
 		}
-		
+
 		Game game = new Game(username, cType);
 		game.run();
 	}
