@@ -38,9 +38,7 @@ public class Game {
 				} else if (ans.equals("remove")) {
 					undoLetter();
 				} else if (ans.equals("save")) {
-					if (promptSave()) {
-						continue;
-					} else {
+					if (!promptSave()) {
 						break;
 					}
 				} else if (ans.equals("load")) {
@@ -233,7 +231,6 @@ public class Game {
 			Scanner input = new Scanner(new FileInputStream("SavedCG.txt"));
 			while (input.hasNext()) {
 				String line = input.nextLine().trim();
-				System.out.println("FILE CONTAINS: " + line);
 				if (line.equals(currentPlayer.username)) {
 					exists = true;
 				}
@@ -267,6 +264,7 @@ public class Game {
 			output = new BufferedWriter(new OutputStreamWriter (new FileOutputStream("SavedCG.txt")));
 
 			output.write(currentPlayer.username + "\n");
+			output.write(cryptType + "\n");
 			output.write(cryptogram.phrase+ "\n");
 			output.write(cryptogram.cryptoMapping.size() + "\n");
 			for (Map.Entry<String,String> entry: cryptogram.cryptoMapping.entrySet()) {
@@ -277,7 +275,6 @@ public class Game {
 			for (Map.Entry<String,String> entry: cryptogram.userGuess.entrySet()) {
 				output.write(entry.getKey() + " " + entry.getValue() + "\n");
 			}
-			output.write( "\n");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -318,6 +315,7 @@ public class Game {
 				String nonl = line.trim();
 				if (nonl.equals(currentPlayer.username)) {
 					curr.readLine();
+					curr.readLine();
 					Integer n = Integer.parseInt(curr.readLine().trim());
 					for (int i=0; i<n; i++) {
 						curr.readLine();
@@ -335,9 +333,78 @@ public class Game {
 			e.printStackTrace();
 		}
 	}
-	
-	public void loadGame() {
-		
+
+	/* Returns true if a game exists and was successfully loaded */
+	public boolean loadGame() {
+		if (!checkSaveExists()) {
+			System.out.println("Error: You do not yet have a save file under this name.");
+			return true;
+		}
+
+		BufferedReader input = null;
+		try {
+			input = new BufferedReader(new InputStreamReader((new FileInputStream("SavedCG.txt"))));
+
+			String username;
+			while((username = input.readLine()) != null) {
+				username = username.trim();
+				if (username.equals(currentPlayer.username)) {
+					String type = input.readLine().trim();
+					String phrase = input.readLine().trim();
+
+					int elems = Integer.parseInt(input.readLine().trim());
+					HashMap<String, String> cryptMapping = new HashMap<>();
+					for (int i = 0; i < elems; i++) {
+						String[] kv = input.readLine().trim().split(" ");
+						String key = kv[0];
+						String val = kv[1];
+						cryptMapping.put(key, val);
+					}
+
+					int nguess = Integer.parseInt(input.readLine().trim());
+					HashMap<String, String> userGuess = new HashMap<>();
+					for (int i = 0; i < nguess; i++) {
+						String[] kv = input.readLine().trim().split(" ");
+						String key = kv[0];
+						String val = kv[1];
+						userGuess.put(key, val);
+					}
+
+					Cryptogram loaded;
+					if (type.equals("NumberCryptogram")) {
+						loaded = new NumberCryptogram(phrase, cryptMapping, userGuess);
+					} else {
+						loaded = new LetterCryptogram(phrase, cryptMapping, userGuess);
+					}
+					this.cryptogram = loaded;
+					return true;
+				} else {
+					input.readLine();
+					input.readLine();
+
+					int elems = Integer.parseInt(input.readLine().trim());
+					for (int i = 0; i < elems; i++) {
+						input.readLine();
+					}
+
+					int nguess = Integer.parseInt(input.readLine().trim());
+					for (int i = 0; i < nguess; i++) {
+						input.readLine();
+					}
+					input.readLine();
+				}
+			}
+			return false;
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				input.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 	public void showSolution() {

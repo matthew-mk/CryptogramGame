@@ -18,6 +18,28 @@ public class NumberCryptogram extends Cryptogram {
 			encryptedPhrase.add(" ");
 		}
 	}
+
+	public NumberCryptogram(String phrase, HashMap<String, String> mapping, HashMap<String, String> userGuess) {
+		this.phrase = phrase;
+		this.userGuess = userGuess;
+		this.cryptoMapping = mapping;
+		this.answerMapping = new HashMap<>();
+
+		for (Map.Entry<String, String> entry: cryptoMapping.entrySet()) {
+			answerMapping.put(entry.getValue(), entry.getKey());
+		}
+
+		this.encryptedPhrase = new ArrayList<>();
+		for (Character c: phrase.toCharArray()) {
+			String out = cryptoMapping.get(c.toString());
+			if (out != null) {
+				encryptedPhrase.add(out);
+			} else {
+				encryptedPhrase.add(c.toString());
+			}
+			encryptedPhrase.add(" ");
+		}
+	}
 	
 	public void matchLetterToNumber() {
 		this.cryptoMapping = new HashMap<>();
