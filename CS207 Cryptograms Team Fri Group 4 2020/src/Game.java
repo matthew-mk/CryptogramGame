@@ -12,7 +12,6 @@ public class Game {
 	public Formatter formatter;
 
 	public Game(String p, String cryptType) {
-		currentPlayer = new Player(p);
 		this.cryptType = cryptType;
 		loadPhrases();
 	}
@@ -119,7 +118,29 @@ public class Game {
 	 */
 	public void promptDataLoading() {
 		Scanner input = new Scanner(System.in);
+		System.out.println("Please enter your username:");
+		String username = input.next();
+		if (playerExists(username)) {
+			System.out.println("A player already exists with that username - would you like to load that profile?");
+			String yn;
+			while (input.hasNext()) {
+				yn = input.next();
+				if (yn.equals("Y")) {
+					currentPlayer = new Player(username);
+					break;
+				} else if (!yn.equals("N")) {
+					System.out.println("Command not understood.");
+				} else {
+					break;
+				}
+			}
+		} else {
+			currentPlayer = new Player(username);
+		}
+	}
 
+	public boolean playerExists(String username) {
+		return false;
 	}
 
 	public void loadPhrases() {
