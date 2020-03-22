@@ -232,7 +232,9 @@ public class Game {
 		try {
 			Scanner input = new Scanner(new FileInputStream("SavedCG.txt"));
 			while (input.hasNext()) {
-				if (input.nextLine().trim().equals(currentPlayer.username)) {
+				String line = input.nextLine().trim();
+				System.out.println("FILE CONTAINS: " + line);
+				if (line.equals(currentPlayer.username)) {
 					exists = true;
 				}
 			}
@@ -290,10 +292,27 @@ public class Game {
 	public void eraseLastGame() {
 		BufferedReader reader = null;
 		File tmp = new File("tmp.tmp");
+		if (!tmp.isFile()) {
+			try {
+				tmp.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		File current = new File("SavedCG.txt");
+
+		if (!current.isFile()) {
+			try {
+				current.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		try (
 				BufferedReader curr = new BufferedReader(new FileReader(current));
-				BufferedWriter temp = new BufferedWriter(new FileWriter(tmp))) {
+				BufferedWriter temp = new BufferedWriter(new FileWriter(tmp, false))) {
 			String line;
 			while ((line = curr.readLine()) != null) {
 				String nonl = line.trim();
