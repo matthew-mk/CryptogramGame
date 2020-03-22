@@ -38,7 +38,11 @@ public class Game {
 				} else if (ans.equals("remove")) {
 					undoLetter();
 				} else if (ans.equals("save")) {
-					saveGame();
+					if (promptSave()) {
+						continue;
+					} else {
+						break;
+					}
 				} else if (ans.equals("load")) {
 					loadGame();
 				} else {
@@ -61,6 +65,22 @@ public class Game {
 				break;
 			}
 			else {
+				System.out.println("Command not understood.");
+			}
+		}
+	}
+
+	public boolean promptSave() {
+		saveGame();
+		Scanner input = new Scanner(System.in);
+		System.out.println("Would you like to continue playing this cryptogram? (Y/N)");
+		while (true) {
+			String yn = input.next();
+			if (yn.equals("Y")) {
+				return true;
+			} else if (yn.equals("N")) {
+				return false;
+			} else {
 				System.out.println("Command not understood.");
 			}
 		}
@@ -206,9 +226,95 @@ public class Game {
 		
 		input.close();
 	}
-	
+
+	public boolean checkSaveExists() {
+		boolean exists = false;
+		try {
+			Scanner input = new Scanner(new FileInputStream("SavedCG.txt"));
+			while (input.hasNext()) {
+				if (input.nextLine().trim().equals(currentPlayer.username)) {
+					exists = true;
+				}
+			}
+		} catch (FileNotFoundException e) {
+
+		}
+		return exists;
+	}
+
 	public void saveGame() {
-		
+		if (checkSaveExists()) {
+			System.out.println("You already have a saved game with this username. Would you like to overwrite it? Y/N");
+			Scanner input = new Scanner(System.in);
+			while (true) {
+				String ans = input.next();
+				if (ans.equals("N")) {
+					System.out.println("Save aborted.");
+					return;
+				} else if (!ans.equals("Y")) {
+					System.out.println("Command not understood.");
+				} else {
+					break;
+				}
+			}
+		}
+
+		eraseLastGame();
+		BufferedWriter output = null;
+		try {
+			output = new BufferedWriter(new OutputStreamWriter (new FileOutputStream("SavedCG.txt")));
+
+			output.write(currentPlayer.username + "\n");
+			output.write(cryptogram.phrase+ "\n");
+			output.write(cryptogram.cryptoMapping.size() + "\n");
+			for (Map.Entry<String,String> entry: cryptogram.cryptoMapping.entrySet()) {
+				output.write(entry.getKey() + " " + entry.getValue() + "\n");
+			}
+
+			output.write(cryptogram.userGuess.size() + "\n");
+			for (Map.Entry<String,String> entry: cryptogram.userGuess.entrySet()) {
+				output.write(entry.getKey() + " " + entry.getValue() + "\n");
+			}
+			output.write( "\n");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void eraseLastGame() {
+		BufferedReader reader = null;
+		File tmp = new File("tmp.tmp");
+		File current = new File("SavedCG.txt");
+		try (
+				BufferedReader curr = new BufferedReader(new FileReader(current));
+				BufferedWriter temp = new BufferedWriter(new FileWriter(tmp))) {
+			String line;
+			while ((line = curr.readLine()) != null) {
+				String nonl = line.trim();
+				if (nonl.equals(currentPlayer.username)) {
+					curr.readLine();
+					Integer n = Integer.parseInt(curr.readLine().trim());
+					for (int i=0; i<n; i++) {
+						curr.readLine();
+					}
+					Integer m = Integer.parseInt(curr.readLine().trim());
+					for (int i=0; i<m; i++) {
+						curr.readLine();
+					}
+				} else {
+					temp.write(nonl);
+				}
+			}
+			tmp.renameTo(current);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void loadGame() {
