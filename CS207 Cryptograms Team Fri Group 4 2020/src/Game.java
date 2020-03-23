@@ -22,6 +22,12 @@ public class Game {
 		}
 		this.cryptType = cryptType;
 		loadPhrases();
+
+		try {
+			loadPlayer();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public Game(String p) {
@@ -40,6 +46,7 @@ public class Game {
 		Scanner input = new Scanner(System.in);
 		while (true) {
 			generateCryptogram(cryptType);
+			currentPlayer.incrementCryptogramsPlayed();
 			while (!cryptogram.isSolved()) {
 				printPlayerStats();
 				cryptogram.displayPuzzle();
@@ -59,10 +66,9 @@ public class Game {
 					System.out.println("Command not understood.");
 				}
 			}
-			System.out.println("YOU WIN!");
+			System.out.println("GAME OVER");
 
 			currentPlayer.incrementCryptogramsCompleted();
-			currentPlayer.incrementCryptogramsPlayed();
 			currentPlayer.incrementCryptogramPuzzleNumber();
 			saveData();
 			System.out.println("Would you like to play another cryptogram? Please type 'Yes' or 'No' ");
@@ -117,8 +123,34 @@ public class Game {
 
 	}
 
-	public void loadPlayer() {
+	public void loadPlayer() throws IOException {
+		File file = new File("PlayerData.txt");
+		List<String> lines = Files.readAllLines(file.toPath());
 
+		String target_line = null;
+		for (String line: lines) {
+			if (line.contains(currentPlayer.username)) {
+				target_line = line;
+			}
+		}
+
+		/*
+		tring.valueOf(currentPlayer.getNumCryptogramsCompleted() + " ") +
+				String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
+				String.valueOf(currentPlayer.getCryptogramPuzzleNumber() + " ") +
+				String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
+				String.valueOf(currentPlayer.getTotalGuesses() + " ") +
+				String.valueOf(currentPlayer.getAccuracy() + " ") +*/
+
+		if (target_line != null) {
+			String[] words = target_line.split(" ");
+			currentPlayer.cryptogramsCompleted = Integer.parseInt(words[0]);
+			currentPlayer.cryptogramsPlayed = Integer.parseInt(words[1]);
+			currentPlayer.cryptogramPuzzleNumber = Integer.parseInt(words[2]);
+			currentPlayer.accurateGuesses = Integer.parseInt(words[3]);
+			currentPlayer.totalGuesses = Integer.parseInt(words[4]);
+			currentPlayer.accuracy = Integer.parseInt(words[5]);
+		}
 	}
 
 	public void playGame() {
