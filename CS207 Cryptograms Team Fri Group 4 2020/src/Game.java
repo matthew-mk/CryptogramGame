@@ -43,11 +43,13 @@ public class Game {
 	}
 
 	public void run() throws IOException {
+		boolean wasWin = true;
 		Scanner input = new Scanner(System.in);
 		while (true) {
 			generateCryptogram(cryptType);
 			currentPlayer.incrementCryptogramsPlayed();
 			while (!cryptogram.isSolved()) {
+				wasWin = true;
 				printPlayerStats();
 				cryptogram.displayPuzzle();
 				System.out.print("You may 'add' a character, 'remove' a character, 'save' this cryptogram or 'load' another one\n>");
@@ -58,17 +60,22 @@ public class Game {
 					undoLetter();
 				} else if (ans.equals("save")) {
 					if (!promptSave()) {
+						wasWin = false;
 						break;
 					}
 				} else if (ans.equals("load")) {
-					loadGame();
+					if (loadGame()) {
+						currentPlayer.incrementCryptogramsPlayed();
+					}
 				} else {
 					System.out.println("Command not understood.");
 				}
 			}
 			System.out.println("GAME OVER");
 
-			currentPlayer.incrementCryptogramsCompleted();
+			if (wasWin) {
+				currentPlayer.incrementCryptogramsCompleted();
+			}
 			currentPlayer.incrementCryptogramPuzzleNumber();
 			saveData();
 			System.out.println("Would you like to play another cryptogram? Please type 'Yes' or 'No' ");
