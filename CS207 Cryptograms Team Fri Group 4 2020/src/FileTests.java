@@ -1,6 +1,8 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -11,6 +13,24 @@ class FileTests {
     @BeforeEach
     void setUp() throws IOException {
         game = new Game("Username", "NumberCryptogram");
+    }
+
+    @AfterEach
+    void tearDown() throws IOException {
+        FileWriter clearCG = new FileWriter("SavedCG.txt");
+        FileWriter clearPD = new FileWriter("PlayerData.txt");
+        clearCG.write("");
+        clearPD.write("");
+        clearCG.close();
+        clearPD.close();
+    }
+
+    @Test
+    void TestAccuracy() {
+        game.currentPlayer.accurateGuesses++;
+        game.currentPlayer.totalGuesses += 2;
+        game.currentPlayer.updateAccuracy();
+        assert(game.currentPlayer.getAccuracy() == 50);
     }
 
     @Test
@@ -62,5 +82,27 @@ class FileTests {
         assert(game.cryptogram.cryptoMapping.get("2").equals("e"));
         assert(game.cryptogram.cryptoMapping.get("3").equals("l"));
         assert(game.cryptogram.cryptoMapping.get("4").equals("o"));
+    }
+
+    @Test
+    void TestUserGuessSave() {
+        String phrase = "Hello";
+        HashMap<String, String> userGuess = new HashMap<>();
+        userGuess.put("10", "H");
+        userGuess.put("11", "e");
+        userGuess.put("12", "l");
+        userGuess.put("13", "o");
+
+        game.cryptogram = new NumberCryptogram("Test Cryptogram");
+        game.cryptogram.userGuess = userGuess;
+        game.saveGame();
+        /* Change mapping to make sure loading does nothing */
+        game.cryptogram.userGuess.put("10", "F");
+        game.loadGame();
+
+        assert(game.cryptogram.userGuess.get("10").equals("H"));
+        assert(game.cryptogram.userGuess.get("11").equals("e"));
+        assert(game.cryptogram.userGuess.get("12").equals("l"));
+        assert(game.cryptogram.userGuess.get("13").equals("o"));
     }
 }
