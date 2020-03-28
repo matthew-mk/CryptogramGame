@@ -63,7 +63,7 @@ public abstract class Cryptogram {
 			if (c.equals(" ")) {
 				System.out.print(' ');
 			} else if (userGuess.containsKey(c)) {
-				System.out.print(userGuess.get(c));
+				System.out.print(" " + userGuess.get(c));
 			} else {
 				System.out.print(" _");
 			}
