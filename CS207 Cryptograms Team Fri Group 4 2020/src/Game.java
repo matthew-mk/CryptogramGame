@@ -52,7 +52,7 @@ public class Game {
 				wasWin = true;
 				printPlayerStats();
 				cryptogram.displayPuzzle();
-				System.out.print("You may 'add' a character, 'remove' a character, 'save' this cryptogram or 'load' another one\n>");
+				System.out.print("You may 'add' a character, 'remove' a character, get a 'hint', 'save' this cryptogram or 'load' another one\n>");
 				String ans = input.next();
 				if (ans.equals("add")) {
 					enterLetter();
@@ -66,8 +66,11 @@ public class Game {
 				} else if (ans.equals("load")) {
 					if (loadGame()) {
 						currentPlayer.incrementCryptogramsPlayed();
+					}}
+					else if (ans.equals("hint")){
+						cryptogram.getHint();
 					}
-				} else {
+				 else {
 					System.out.println("Command not understood.");
 				}
 			}
@@ -125,10 +128,6 @@ public class Game {
 				currentPlayer.getNumCryptogramsPlayed(),
 				currentPlayer.getAccuracy());
 	}
-	
-	public void getHint() {
-
-	}
 
 	public void loadPlayer() throws IOException {
 		File file = new File("PlayerData.txt");
@@ -140,14 +139,6 @@ public class Game {
 				target_line = line;
 			}
 		}
-
-		/*
-		tring.valueOf(currentPlayer.getNumCryptogramsCompleted() + " ") +
-				String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
-				String.valueOf(currentPlayer.getCryptogramPuzzleNumber() + " ") +
-				String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
-				String.valueOf(currentPlayer.getTotalGuesses() + " ") +
-				String.valueOf(currentPlayer.getAccuracy() + " ") +*/
 
 		if (target_line != null) {
 			String[] words = target_line.split(" ");
@@ -210,7 +201,7 @@ public class Game {
 		String currentPhrase = phrases.get(currentPlayer.getCryptogramPuzzleNumber());
 
 	}
-	
+
 	public void generateCryptogram(String cryptoType) {
 		String currentPhrase = phrases.get(0);
 		if (cryptoType.equals("NumberCryptogram")) {
@@ -271,12 +262,12 @@ public class Game {
 		File file = new File("PlayerData.txt");
 		List<String> data = Files.readAllLines(file.toPath());
 		String line = new String(String.valueOf(currentPlayer.getNumCryptogramsCompleted() + " ") +
-								String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
-								String.valueOf(currentPlayer.getCryptogramPuzzleNumber() + " ") +
-								String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
-								String.valueOf(currentPlayer.getTotalGuesses() + " ") +
-								String.valueOf(currentPlayer.getAccuracy() + " ") +
-								currentPlayer.getUsername());
+				String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
+				String.valueOf(currentPlayer.getCryptogramPuzzleNumber() + " ") +
+				String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
+				String.valueOf(currentPlayer.getTotalGuesses() + " ") +
+				String.valueOf(currentPlayer.getAccuracy() + " ") +
+				currentPlayer.getUsername());
 		int pos = allPlayers.getPlayerId(currentPlayer);
 		if(pos == data.size()){
 			data.add(line);
@@ -523,4 +514,3 @@ public class Game {
 
 
 }
-
