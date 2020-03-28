@@ -5,15 +5,38 @@ public abstract class Cryptogram {
 	protected HashMap<String, String> userGuess;
 	protected HashMap<String, String> cryptoMapping;
 	protected HashMap<String, String> answerMapping;
+	protected HashMap<String, String> hintMapping;
 	protected ArrayList<String> encryptedPhrase;
 	protected String phrase;
+
+	public void getHint(){
+		hintMapping = new HashMap<>();
+		Iterator iterator = answerMapping.keySet().iterator();
+		while(iterator.hasNext()){
+			String key = iterator.next().toString();
+			if(!userGuess.containsKey(key) || !userGuess.get(key).equals(answerMapping.get(key))){
+				hintMapping.put(key, answerMapping.get(key));
+			}
+		}
+		Random randomInt = new Random();
+		String hint = hintMapping.keySet().toArray()[randomInt.nextInt(hintMapping.size())].toString();
+		System.out.println("The correct value for " + hint + " is " + hintMapping.get(hint) + ".");
+		if(userGuess.containsKey(hint)){
+			userGuess.replace(hint, hintMapping.get(hint));
+		}
+		else{
+			userGuess.put(hint, hintMapping.get(hint));
+		}
+
+	}
+
 
 	public boolean hasMapping(String s) {
 		return cryptoMapping.containsKey(s);
 	}
-	
-	public boolean hasUserGuess(String s) { 
-		return userGuess.containsValue(s); 
+
+	public boolean hasUserGuess(String s) {
+		return userGuess.containsValue(s);
 	}
 
 	public void displayPuzzle() {
