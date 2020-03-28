@@ -45,7 +45,12 @@ public abstract class Cryptogram {
 		for (Character c: phrase.toCharArray()) {
 			String out = cryptoMapping.get(c.toString());
 			if (out != null) {
-				System.out.print(out);
+				if (out.length() == 2) {
+					System.out.print(out);
+				}
+				else{
+					System.out.print(" " + out);
+				}
 			} else {
 				System.out.print(c);
 			}
@@ -60,7 +65,7 @@ public abstract class Cryptogram {
 			} else if (userGuess.containsKey(c)) {
 				System.out.print(userGuess.get(c));
 			} else {
-				System.out.print("_ ");
+				System.out.print(" _");
 			}
 		}
 		System.out.println();
