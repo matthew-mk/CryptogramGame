@@ -53,7 +53,7 @@ public class Game {
 				printPlayerStats();
 				cryptogram.displayPuzzle();
 				System.out.print("You may 'add' a character, 'remove' a character, get a 'hint', see letter 'frequencies', 'save' this cryptogram or 'load' another one\n");
-				System.out.print("If you are stuck, you may show the 'solution'\n>");
+				System.out.print("If you are stuck, you may show the 'solution', and you can also view the 'leaderboard'.\n>");
 				String ans = input.next();
 				if (ans.equals("add")) {
 					enterLetter();
@@ -70,7 +70,9 @@ public class Game {
 					}
 				} else if (ans.equals("hint")) {
 					cryptogram.getHint();
-				} else if (ans.equals("frequencies")) {
+				} else if (ans.equals("leaderboard")){
+					this.getTopPlayers();
+				}else if (ans.equals("frequencies")) {
 					HashMap<String, Float> freq = cryptogram.getFrequences();
 					System.out.println("Character : Frequency");
 					for (Map.Entry<String, Float> e: freq.entrySet()) {
@@ -332,6 +334,36 @@ public class Game {
 		input.close();
 
 
+	}
+
+	public void getTopPlayers() throws IOException {
+		File file = new File("PlayerData.txt");
+		List<String> lines = Files.readAllLines(file.toPath());
+		String target_line = null;
+		Scanner reader;
+		List<ArrayList<String>> leaderb = new ArrayList<>();
+		ArrayList<String> temp;
+
+		for (String line: lines) {
+			reader = new Scanner(line);
+			temp = new ArrayList<>();
+			Integer score = reader.nextInt();
+			temp.add(score.toString());
+			for(int a = 0; a < 5; a++){ reader.next(); }
+			String name = reader.next();
+			temp.add(name);
+			leaderb.add(temp);
+		}
+
+		Collections.sort(leaderb, (o1, o2) -> {
+			Integer a1 = Integer.parseInt(o1.get(0));
+			Integer a2 = Integer.parseInt(o2.get(0));
+			return a2.compareTo(a1);
+		});
+
+		for (int i = 0; i < 10 && i < leaderb.size(); i++){
+			System.out.println((i + 1) + " : " + leaderb.get(i));
+		}
 	}
 
 	public boolean checkSaveExists() {
