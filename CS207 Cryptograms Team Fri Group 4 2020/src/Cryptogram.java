@@ -39,6 +39,20 @@ public abstract class Cryptogram {
 		return userGuess.containsValue(s);
 	}
 
+	public HashMap<String, Float> getFrequences() {
+		HashMap<String, Float> freq = new HashMap<>();
+		for (Map.Entry<String, String> e: this.cryptoMapping.entrySet()) {
+			Integer n = 0;
+			for (Character c: this.phrase.toCharArray()) {
+				if (c.toString().equals(e.getKey())) {
+					n++;
+				}
+			}
+			freq.put(e.getValue(), (float) n / this.encryptedPhrase.size() * 100);
+		}
+		return freq;
+	}
+
 	public void displayPuzzle() {
 		System.out.println(userGuess);
 		System.out.println("The current state is: ");

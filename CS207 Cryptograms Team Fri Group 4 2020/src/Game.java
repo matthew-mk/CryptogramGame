@@ -52,7 +52,7 @@ public class Game {
 				wasWin = true;
 				printPlayerStats();
 				cryptogram.displayPuzzle();
-				System.out.print("You may 'add' a character, 'remove' a character, get a 'hint', 'save' this cryptogram or 'load' another one\n>");
+				System.out.print("You may 'add' a character, 'remove' a character, get a 'hint', see letter 'frequencies', 'save' this cryptogram or 'load' another one\n>");
 				String ans = input.next();
 				if (ans.equals("add")) {
 					enterLetter();
@@ -66,11 +66,16 @@ public class Game {
 				} else if (ans.equals("load")) {
 					if (loadGame()) {
 						currentPlayer.incrementCryptogramsPlayed();
-					}}
-					else if (ans.equals("hint")){
-						cryptogram.getHint();
 					}
-				 else {
+				} else if (ans.equals("hint")) {
+					cryptogram.getHint();
+				} else if (ans.equals("frequencies")) {
+					HashMap<String, Float> freq = cryptogram.getFrequences();
+					System.out.println("Character : Frequency");
+					for (Map.Entry<String, Float> e: freq.entrySet()) {
+						System.out.println(String.format("%s : %s%%", e.getKey(), e.getValue()));
+					}
+				} else {
 					System.out.println("Command not understood.");
 				}
 			}
