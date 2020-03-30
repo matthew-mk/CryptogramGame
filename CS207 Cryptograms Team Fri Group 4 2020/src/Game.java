@@ -5,12 +5,11 @@ import java.io.*;
 public class Game {
 
 	public ArrayList<String> phrases;
-	public HashMap<Player, Game> playerGameMapping;
 	public Cryptogram cryptogram;
 	public Players allPlayers = new Players();
 	public Player currentPlayer;
 	public String cryptType;
-	public Formatter formatter;
+	public String currentPhrase;
 
 	public Game(String p, String cryptType) {
 		if(allPlayers.findPlayer(p) == null) {
@@ -21,7 +20,6 @@ public class Game {
 			currentPlayer = allPlayers.findPlayer(p);
 		}
 		this.cryptType = cryptType;
-		loadPhrases();
 
 		try {
 			loadPlayer();
@@ -46,8 +44,16 @@ public class Game {
 		boolean wasWin = true;
 		Scanner input = new Scanner(System.in);
 		while (true) {
+			if (loadPhrases() == 1){
+				System.out.println("Your stats are: ");
+				printPlayerStats();
+				System.out.println("The leaderboard is: ");
+				getTopPlayers();
+				break;
+			}
 			generateCryptogram(cryptType);
 			currentPlayer.incrementCryptogramsPlayed();
+			label:
 			while (!cryptogram.isSolved()) {
 				wasWin = true;
 				printPlayerStats();
@@ -55,35 +61,44 @@ public class Game {
 				System.out.print("You may 'add' a character, 'remove' a character, get a 'hint', see letter 'frequencies', 'save' this cryptogram or 'load' another one\n");
 				System.out.print("If you are stuck, you may show the 'solution', and you can also view the 'leaderboard'.\n>");
 				String ans = input.next();
-				if (ans.equals("add")) {
-					enterLetter();
-				} else if (ans.equals("remove")) {
-					undoLetter();
-				} else if (ans.equals("save")) {
-					if (!promptSave()) {
-						wasWin = false;
+				switch (ans) {
+					case "add":
+						enterLetter();
 						break;
-					}
-				} else if (ans.equals("load")) {
-					if (loadGame()) {
-						currentPlayer.incrementCryptogramsPlayed();
-					}
-				} else if (ans.equals("hint")) {
-					cryptogram.getHint();
-				} else if (ans.equals("leaderboard")){
-					this.getTopPlayers();
-				}else if (ans.equals("frequencies")) {
-					HashMap<String, Float> freq = cryptogram.getFrequences();
-					System.out.println("Character : Frequency");
-					for (Map.Entry<String, Float> e: freq.entrySet()) {
-						System.out.println(String.format("%s : %s%%", e.getKey(), e.getValue()));
-					}
-				} else if (ans.equals("solution")) {
-					System.out.println("Solution: " + cryptogram.phrase);
-					wasWin = false;
-					break;
-				} else {
-					System.out.println("Command not understood.");
+					case "remove":
+						undoLetter();
+						break;
+					case "save":
+						if (!promptSave()) {
+							wasWin = false;
+							break label;
+						}
+						break;
+					case "load":
+						if (loadGame()) {
+							currentPlayer.incrementCryptogramsPlayed();
+						}
+						break;
+					case "hint":
+						cryptogram.getHint();
+						break;
+					case "leaderboard":
+						this.getTopPlayers();
+						break;
+					case "frequencies":
+						HashMap<String, Float> freq = cryptogram.getFrequences();
+						System.out.println("Character : Frequency");
+						for (Map.Entry<String, Float> e : freq.entrySet()) {
+							System.out.println(String.format("%s : %s%%", e.getKey(), e.getValue()));
+						}
+						break;
+					case "solution":
+						System.out.println("Solution: " + cryptogram.phrase);
+						wasWin = false;
+						break label;
+					default:
+						System.out.println("Command not understood.");
+						break;
 				}
 			}
 			System.out.println("GAME OVER");
@@ -163,42 +178,7 @@ public class Game {
 		}
 	}
 
-	public void playGame() {
-
-	}
-
-	/* This function should ask the user if they have a saved account that they want to
-	load, or if they want to start a new record. In the latter case it needs to use their name
-	to create a new player record
-	 */
-	public void promptDataLoading() {
-		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter your username:");
-		String username = input.next();
-		if (playerExists(username)) {
-			System.out.println("A player already exists with that username - would you like to load that profile?");
-			String yn;
-			while (input.hasNext()) {
-				yn = input.next();
-				if (yn.equals("Y")) {
-					currentPlayer = new Player(username);
-					break;
-				} else if (!yn.equals("N")) {
-					System.out.println("Command not understood.");
-				} else {
-					break;
-				}
-			}
-		} else {
-			currentPlayer = new Player(username);
-		}
-	}
-
-	public boolean playerExists(String username) {
-		return false;
-	}
-
-	public void loadPhrases() {
+	public int loadPhrases() {
 		phrases = new ArrayList<>();
 		File file = new File("Crypto-Phrases.txt");
 		try {
@@ -210,12 +190,17 @@ public class Game {
 		} catch (FileNotFoundException e){
 			System.out.println("Error: the Crypto-Phrases file was not found.");
 		}
-		String currentPhrase = phrases.get(currentPlayer.getCryptogramPuzzleNumber());
-
+		if(currentPlayer.getCryptogramPuzzleNumber() < 16) {
+			currentPhrase = phrases.get(currentPlayer.getCryptogramPuzzleNumber());
+			return 0;
+		}
+		else{
+			System.out.println("There are no more cryptograms.");
+			return 1;
+		}
 	}
 
 	public void generateCryptogram(String cryptoType) {
-		String currentPhrase = phrases.get(0);
 		if (cryptoType.equals("NumberCryptogram")) {
 			cryptogram = new NumberCryptogram(currentPhrase);
 		}
@@ -243,14 +228,9 @@ public class Game {
 
 		if (sym.equals(cryptogram.cryptoMapping.get(x))) {
 			currentPlayer.accurateGuesses++;
-			currentPlayer.totalGuesses++;
-			currentPlayer.updateAccuracy();
 		}
-		else {
-			currentPlayer.totalGuesses++;
-			currentPlayer.updateAccuracy();
-		}
-		//input.close();
+		currentPlayer.totalGuesses++;
+		currentPlayer.updateAccuracy();
 	}
 
 
@@ -263,23 +243,18 @@ public class Game {
 		} else {
 			System.out.print("That character is not mapped.");
 		}
-		//input.close();
-	}
-
-	public void viewFrequencies() {
-
 	}
 
 	public void saveData() throws IOException {
 		File file = new File("PlayerData.txt");
 		List<String> data = Files.readAllLines(file.toPath());
-		String line = new String(String.valueOf(currentPlayer.getNumCryptogramsCompleted() + " ") +
-				String.valueOf(currentPlayer.getNumCryptogramsPlayed() + " ") +
-				String.valueOf(currentPlayer.getCryptogramPuzzleNumber() + " ") +
-				String.valueOf(currentPlayer.getAccurateGuesses() + " ") +
-				String.valueOf(currentPlayer.getTotalGuesses() + " ") +
-				String.valueOf(currentPlayer.getAccuracy() + " ") +
-				currentPlayer.getUsername());
+		String line = currentPlayer.getNumCryptogramsCompleted() + " " +
+				currentPlayer.getNumCryptogramsPlayed() + " " +
+				currentPlayer.getCryptogramPuzzleNumber() + " " +
+				currentPlayer.getAccurateGuesses() + " " +
+				currentPlayer.getTotalGuesses() + " " +
+				currentPlayer.getAccuracy() + " " +
+				currentPlayer.getUsername();
 		int pos = allPlayers.getPlayerId(currentPlayer);
 		if(pos == data.size()){
 			data.add(line);
@@ -297,49 +272,11 @@ public class Game {
 
 		bwriter.close();
 		writer.close();
-
-	}
-
-	public void loadData() {
-
-		Scanner input = new Scanner(System.in);
-
-		try {
-			input = new Scanner(new File("PlayerData.txt"));
-		}
-		catch (Exception e) {
-			System.out.println("File could not be found.");
-		}
-
-		while (input.hasNext()) {
-			int cryptogramsCompleted = input.nextInt();
-			int cryptogramsPlayed = input.nextInt();
-			int cryptogramPuzzleNumber = input.nextInt();
-			int accurateGuesses = input.nextInt();
-			int totalGuesses = input.nextInt();
-			int accuracy = input.nextInt();
-			String username = input.next();
-			if(username.equals(currentPlayer.getUsername())){
-				currentPlayer.cryptogramsCompleted = cryptogramsCompleted;
-				currentPlayer.cryptogramsPlayed = cryptogramsPlayed;
-				currentPlayer.cryptogramPuzzleNumber = cryptogramPuzzleNumber;
-				currentPlayer.accurateGuesses = accurateGuesses;
-				currentPlayer.totalGuesses = totalGuesses;
-				currentPlayer.accuracy = accuracy;
-				break;
-			}
-
-		}
-
-		input.close();
-
-
 	}
 
 	public void getTopPlayers() throws IOException {
 		File file = new File("PlayerData.txt");
 		List<String> lines = Files.readAllLines(file.toPath());
-		String target_line = null;
 		Scanner reader;
 		List<ArrayList<String>> leaderb = new ArrayList<>();
 		ArrayList<String> temp;
@@ -347,15 +284,15 @@ public class Game {
 		for (String line: lines) {
 			reader = new Scanner(line);
 			temp = new ArrayList<>();
-			Integer score = reader.nextInt();
-			temp.add(score.toString());
+			int score = reader.nextInt();
+			temp.add(Integer.toString(score));
 			for(int a = 0; a < 5; a++){ reader.next(); }
 			String name = reader.next();
 			temp.add(name);
 			leaderb.add(temp);
 		}
 
-		Collections.sort(leaderb, (o1, o2) -> {
+		leaderb.sort((o1, o2) -> {
 			Integer a1 = Integer.parseInt(o1.get(0));
 			Integer a2 = Integer.parseInt(o2.get(0));
 			return a2.compareTo(a1);
@@ -377,7 +314,7 @@ public class Game {
 				}
 			}
 		} catch (FileNotFoundException e) {
-
+			System.out.println("Error: the SavedCG file was not found.");
 		}
 		return exists;
 	}
@@ -422,6 +359,7 @@ public class Game {
 			ex.printStackTrace();
 		} finally {
 			try {
+				assert output != null;
 				output.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -430,7 +368,6 @@ public class Game {
 	}
 
 	public void eraseLastGame() {
-		BufferedReader reader = null;
 		File tmp = new File("tmp.tmp");
 		if (!tmp.isFile()) {
 			try {
@@ -459,11 +396,11 @@ public class Game {
 				if (nonl.equals(currentPlayer.username)) {
 					curr.readLine();
 					curr.readLine();
-					Integer n = Integer.parseInt(curr.readLine().trim());
+					int n = Integer.parseInt(curr.readLine().trim());
 					for (int i=0; i<n; i++) {
 						curr.readLine();
 					}
-					Integer m = Integer.parseInt(curr.readLine().trim());
+					int m = Integer.parseInt(curr.readLine().trim());
 					for (int i=0; i<m; i++) {
 						curr.readLine();
 					}
@@ -542,6 +479,7 @@ public class Game {
 			ex.printStackTrace();
 		} finally {
 			try {
+				assert input != null;
 				input.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -549,10 +487,4 @@ public class Game {
 		}
 		return false;
 	}
-
-	public void showSolution() {
-
-	}
-
-
 }
