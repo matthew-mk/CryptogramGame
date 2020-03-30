@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
-	
+
 	public static void main(String[] args) throws IOException {
 
 		Scanner input = new Scanner(System.in);
@@ -24,16 +24,8 @@ public class Main {
 		}
 
 		System.out.println("Enter your username: ");
-		String username;
-		while(true) {
-			username = input.next();
-			break;
-
-		}
-
+		String username = input.next();
 		Game game = new Game(username, cType);
 		game.run();
 	}
-	
-	
 }
