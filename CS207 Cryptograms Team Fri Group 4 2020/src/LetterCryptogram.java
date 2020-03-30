@@ -58,11 +58,4 @@ public class LetterCryptogram extends Cryptogram {
 			i++;
 		}
 	}
-
-	/*
-	public char getPlainLetter(char cryptoLetter) {
-
-	}
-	*/
-
 }
