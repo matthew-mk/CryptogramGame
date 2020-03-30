@@ -10,11 +10,7 @@ public class LetterCryptogram extends Cryptogram {
 		this.encryptedPhrase = new ArrayList<>();
 		for (Character c: phrase.toCharArray()) {
 			String out = cryptoMapping.get(c.toString());
-			if (out != null) {
-				encryptedPhrase.add(out);
-			} else {
-				encryptedPhrase.add(c.toString());
-			}
+			encryptedPhrase.add(Objects.requireNonNullElseGet(out, c::toString));
 			encryptedPhrase.add(" ");
 		}
 	}
@@ -32,11 +28,7 @@ public class LetterCryptogram extends Cryptogram {
 		this.encryptedPhrase = new ArrayList<>();
 		for (Character c: phrase.toCharArray()) {
 			String out = cryptoMapping.get(c.toString());
-			if (out != null) {
-				encryptedPhrase.add(out);
-			} else {
-				encryptedPhrase.add(c.toString());
-			}
+			encryptedPhrase.add(Objects.requireNonNullElseGet(out, c::toString));
 			encryptedPhrase.add(" ");
 		}
 	}
@@ -66,10 +58,10 @@ public class LetterCryptogram extends Cryptogram {
 			i++;
 		}
 	}
-	
+
 	/*
 	public char getPlainLetter(char cryptoLetter) {
-		
+
 	}
 	*/
 
