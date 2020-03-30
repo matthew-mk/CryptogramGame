@@ -11,11 +11,9 @@ public abstract class Cryptogram {
 
 	public void getHint(){
 		hintMapping = new HashMap<>();
-		Iterator iterator = answerMapping.keySet().iterator();
-		while(iterator.hasNext()){
-			String key = iterator.next().toString();
-			if(!userGuess.containsKey(key) || !userGuess.get(key).equals(answerMapping.get(key))){
-				hintMapping.put(key, answerMapping.get(key));
+		for (String s : answerMapping.keySet()) {
+			if (!userGuess.containsKey(s) || !userGuess.get(s).equals(answerMapping.get(s))) {
+				hintMapping.put(s, answerMapping.get(s));
 			}
 		}
 		Random randomInt = new Random();
@@ -29,8 +27,7 @@ public abstract class Cryptogram {
 		}
 
 	}
-
-
+	
 	public boolean hasMapping(String s) {
 		return cryptoMapping.containsKey(s);
 	}
@@ -42,7 +39,7 @@ public abstract class Cryptogram {
 	public HashMap<String, Float> getFrequences() {
 		HashMap<String, Float> freq = new HashMap<>();
 		for (Map.Entry<String, String> e: this.cryptoMapping.entrySet()) {
-			Integer n = 0;
+			int n = 0;
 			for (Character c: this.phrase.toCharArray()) {
 				if (c.toString().equals(e.getKey())) {
 					n++;
