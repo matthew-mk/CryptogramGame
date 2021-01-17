@@ -1,6 +1,8 @@
-# CS207 Cryptograms Team Fri Group 4 2020
+# Cryptogram Game
 
-Cryptogram game developed in Java for CS207.
+This is a cryptogram game developed in Java for the "CS207 - Advanced Programming" course at the University of Strathclyde.
+
+
 
 Developers:
 *  Orion Assefaw
@@ -8,4 +10,3 @@ Developers:
 *  Matthew King
 *  Craig McKenna
 *  Nithish Kumar Megarajan
-
